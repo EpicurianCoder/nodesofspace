@@ -5,8 +5,7 @@ export default function Home() {
   return (
     <>
       <NavbarLite />
-      <main className="container">
-          <h1 className="header">Network Graph</h1>
+      <main className="container-graph">
         <VisGraph />
       </main>
     </>
