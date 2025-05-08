@@ -14,6 +14,11 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  background-color: #ffffff; /* or your preferred dark color */
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 body {
@@ -48,9 +53,11 @@ a {
   border-radius: 0.5rem;
   max-width: 40rem;
   margin: 2rem auto;
+  background-color: #ffffff;
 }
 
 .container-graph {
+  background-color: #ffffff;
 }
 
 .header {

@@ -55,9 +55,9 @@ export default function UploadForm() {
   async function uploadFile(file, imagePath) {
     const { data, error } = await supabase.storage.from('nothings').upload(imagePath, file)
     if (error) {
-      // Handle error
+      console.error('Error uploading file to supabase:', error);
     } else {
-      // Handle success
+      console.log('File uploaded successfully to supabase:', data);
     }
   }
 
@@ -148,7 +148,7 @@ export default function UploadForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ labels, location, base64Image, quantity, imagePath }), // Send the labels as JSON
+        body: JSON.stringify({ labels, location, quantity, imagePath }), // Send the labels as JSON
       });
 
       const data = await response.json();

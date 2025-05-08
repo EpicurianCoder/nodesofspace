@@ -5,13 +5,21 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ message: `Method ${req.method} not allowed` });
   }
 
-  const { labels, location, base64Image, quantity, imagePath } = req.body;
+  const { labels, location, quantity, imagePath } = req.body;
 
   const name_temp = labels[0].description;
   const description = labels.map(label => label.description).join(', ');
@@ -22,7 +30,7 @@ export default async function handler(req, res) {
     .insert([
       {
         name: name_temp,
-        description: 'description does here...',
+        description: 'description goes here...',
         svg_url: imagePath,
         quantity: quantity,
         location: location,
