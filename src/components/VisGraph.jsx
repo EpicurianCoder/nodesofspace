@@ -62,6 +62,11 @@ const VisGraph = () => {
 
       const data = { nodes, edges };
       const options = {
+        interaction: {
+          multiselect: true,  // Enable multiple node selection
+          dragNodes: true,    // Optional: Allow dragging nodes
+          zoomView: true      // Optional: Allow zooming
+        },
         nodes: { shape: 'dot', size: 20 },
         edges: { arrows: { to: true }, smooth: true },
         physics: { enabled: true },
@@ -71,11 +76,29 @@ const VisGraph = () => {
 
       network.on('click', (event) => {
         const { nodes: clickedNodes } = event;
-        if (clickedNodes.length > 0) {
+        if (clickedNodes.length == 0) {
+          setSelectedNode(null);
+        }
+      });
+
+      // Listen for node selection event
+      network.on('select', function(event) {
+        const { nodes: clickedNodes } = event;
+        if (clickedNodes.length == 1) {
           const nodeId = clickedNodes[0];
           const nodeData = nodes.get(nodeId);
           setSelectedNode(nodeData);
         }
+        if (clickedNodes.length > 1) {
+          setSelectedNode(null);
+        }
+        console.log('Selected nodes:', event.nodes);
+      });
+
+      // Optional: Listen for deselection events to reset selections
+      network.on('deselect', function(event) {
+        setSelectedNode(null);
+        console.log('Deselected nodes:', event.nodes);
       });
 
       return () => network.destroy();
@@ -113,7 +136,7 @@ const VisGraph = () => {
   return (
     <div>
       <div ref={containerRef} style={{ height: '600px' }} />
-      {selectedNode && (
+      {selectedNode !== null && (
         <div className="floating-node-details">
           <h3>Node Details</h3><br/>
           <p><strong>ID:</strong> {selectedNode.id}</p><br/>
