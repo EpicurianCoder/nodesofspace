@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: `Method ${req.method} not allowed` });
   }
 
-  const { labels, location, base64Image, quantity } = req.body;
+  const { labels, location, base64Image, quantity, imagePath } = req.body;
 
   const name_temp = labels[0].description;
   const description = labels.map(label => label.description).join(', ');
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       {
         name: name_temp,
         description: 'description does here...',
-        svg_url: '',
+        svg_url: imagePath,
         quantity: quantity,
         location: location,
         categories: description,

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
+import { createClient } from '@supabase/supabase-js';
 
 export default function UploadForm() {
   const VISION_API = process.env.NEXT_PUBLIC_VISION_API;
@@ -15,6 +16,10 @@ export default function UploadForm() {
   const [location, setLocation] = useState('');
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -47,6 +52,15 @@ export default function UploadForm() {
     }
   };
 
+  async function uploadFile(file, imagePath) {
+    const { data, error } = await supabase.storage.from('nothings').upload(imagePath, file)
+    if (error) {
+      // Handle error
+    } else {
+      // Handle success
+    }
+  }
+
   const handleUpload = async () => {
     if (!selectedFile) return;
 
@@ -55,7 +69,7 @@ export default function UploadForm() {
     // Convert file to base64
     const reader = new FileReader();
     reader.onloadend = async () => {
-      const base64Image = reader.result.split(',')[1]; // Remove data:image/...;base64,
+      const base64Image = reader.result.split(',')[1];
       setBase64Image(base64Image);
       try {
         const requestBody = {
@@ -125,17 +139,19 @@ export default function UploadForm() {
       return;
     }
     try {
+      const randomNumber = Math.floor(Math.random() * 1000000);
+      // change label to actual gemini detemined name
+      const imagePath = `${labels[0].description}_${randomNumber}.jpg`;
+      uploadFile(selectedFile, imagePath);
       const response = await fetch('/api/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ labels, location, base64Image, quantity }), // Send the labels as JSON
+        body: JSON.stringify({ labels, location, base64Image, quantity, imagePath }), // Send the labels as JSON
       });
 
       const data = await response.json();
-      // const labels_new = data.processedData.labelAnnotations;
-      // console.log('Response from API:', labels_new);
   
       if (response.ok) {
         console.log(data.message); // Print the message to the console

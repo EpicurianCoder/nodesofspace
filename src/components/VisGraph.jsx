@@ -8,7 +8,7 @@ import 'vis-network/styles/vis-network.css';
 import { FiPlus } from 'react-icons/fi';
 import { DiGoogleCloudPlatform } from "react-icons/di";
 import Swal from 'sweetalert2';
-import { renderToStaticMarkup } from 'react-dom/server'; // Proper import
+import { renderToStaticMarkup } from 'react-dom/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -28,7 +28,7 @@ const VisGraph = () => {
 
       const { data: items, error } = await supabase
         .from('Items')
-        .select('id, name, description, location, categories');
+        .select('id, name, description, location, categories, svg_url');
 
       if (error) {
         console.error('Error fetching nodes:', error);
@@ -50,6 +50,7 @@ const VisGraph = () => {
         description: item.description || '',
         location: item.location || '',
         categories: item.categories || '',
+        svg_url: item.svg_url || '',
         image: base64IconPlus
       }));
 
@@ -77,9 +78,9 @@ const VisGraph = () => {
       const data = { nodes, edges };
       const options = {
         interaction: {
-          multiselect: true,  // Enable multiple node selection
-          dragNodes: true,    // Optional: Allow dragging nodes
-          zoomView: true      // Optional: Allow zooming
+          multiselect: true,
+          dragNodes: true,
+          zoomView: true
         },
         nodes: { 
           shape: 'dot', 
@@ -93,7 +94,7 @@ const VisGraph = () => {
         edges: { arrows: { to: true }, smooth: true },
         physics: {
           enabled: true,
-          solver: 'barnesHut', // Use Barnes-Hut physics solver for natural spacing
+          solver: 'barnesHut',
           barnesHut: {
             gravitationalConstant: -20000, // Strength of repulsion between nodes
             centralGravity: 0.3, // How much nodes are attracted to the center
@@ -157,10 +158,10 @@ const VisGraph = () => {
       title: 'Please Confirm',
       text: 'Are you sure you want to permanently remove this node?',
       icon: 'warning',
-      showCancelButton: true, // Show the "Reject" button
-      confirmButtonText: 'Confirm', // Text for the "Confirm" button
-      cancelButtonText: 'Reject', // Text for the "Reject" button
-      reverseButtons: true, // Reverse the order of buttons (confirm button on the left)
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Reject',
+      reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -184,23 +185,37 @@ const VisGraph = () => {
           Swal.fire('Error!', 'An unexpected error occurred.', 'error');
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // Action when "Reject" is clicked
         Swal.fire('Rejected!', 'You have rejected the action.', 'error');
       }
     });
   };
 
-  const handleFullDetails = () => {
-    // adds the following ro the node details info pop-up
-    const { id, description, location, categories } = selectedNode;
+  const handleFullDetails = async () => {
+    const { id, description, location, categories, svg_url } = selectedNode;
     const nodeDescription = `
       Description: ${description}<br><br>
       Location: ${location}<br><br>
+      SVG URL: ${svg_url}<br><br>
       Categories: ${categories}<br>
     `;
+    const { data, error } = await supabase.storage
+      .from('nothings')
+      .createSignedUrl(svg_url, 3600)
+    if (data) {
+      console.log(data.signedUrl)
+    }
+    if (error) {
+      console.error('Error fetching signed URL:', error);
+      return;
+    }
     Swal.fire({
               title: 'Full Node Details',
               html: nodeDescription,
+              imageUrl: data.signedUrl,
+              customClass: {
+                image: 'swal-custom-image'
+              },
+              imageAlt: 'Reference Image',
               icon: 'info',
               confirmButtonText: 'OK'
             });
