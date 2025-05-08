@@ -40,3 +40,405 @@ a {
     color-scheme: dark;
   }
 }
+
+/* General Styles */
+.container {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  max-width: 40rem;
+  margin: 2rem auto;
+}
+
+.header {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.upload-box {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 2px dashed #ccc;
+  border-radius: 0.375rem;
+}
+
+.upload-box.dragging {
+  border-color: #3b82f6;
+  background-color: #ebf4ff;
+}
+
+.upload-box p {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.upload-box .file-name {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.preview-img {
+  margin-top: 1rem;
+  border-radius: 0.375rem;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #1d4ed8;
+}
+
+.button:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.status {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.button-group {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.green-button {
+  background-color: #16a34a;
+}
+
+.green-button:hover {
+  background-color: #15803d;
+}
+
+.red-button {
+  background-color: #dc2626;
+}
+
+.red-button:hover {
+  background-color: #b91c1c;
+}
+
+/* Navbar Styling */
+.navbar {
+  background-color: #333; /* Dark grey background */
+  color: #fff; /* White text */
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px; /* Centered and constrained width */
+}
+
+.navbar-title {
+  font-size: 1.5rem; /* Larger font size for the title */
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-title:hover {
+  color: #ccc; /* Light grey on hover */
+}
+
+.navbar-link {
+  font-size: 1rem;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-link:hover {
+  background-color: #444; /* Slightly lighter grey on hover */
+  color: #ddd; /* Light grey text on hover */
+}
+
+.navbar-left,
+.navbar-right {
+  font-weight: 500; /* Slightly bold for links */
+}
+
+.upload-form {
+  padding: 16px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upload-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.upload-drop-zone {
+  padding: 30px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.upload-drop-zone.dragging {
+  border-color: #3498db;
+  background-color: #ebf5fb;
+}
+
+.upload-input {
+  display: none;
+}
+
+.upload-label {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.upload-label:hover {
+  background-color: #2980b9;
+}
+
+.upload-instruction {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.upload-file-name {
+  border:1px solid #0a0a0a;
+  padding: 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.upload-preview {
+  margin-top: 16px;
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+}
+
+.upload-button {
+  margin-top: 16px;
+  padding: 12px 24px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.upload-button:hover {
+  background-color: #2980b9;
+}
+
+.upload-status {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+.upload-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.submit-button,
+.cancel-button {
+  padding: 12px 24px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button {
+  background-color: #2ecc71;
+}
+
+.submit-button:hover {
+  background-color: #27ae60;
+}
+
+.cancel-button {
+  background-color: #e74c3c;
+}
+
+.cancel-button:hover {
+  background-color: #c0392b;
+}
+
+.edit-form {
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+}
+
+.edit-form h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background-color: #0070f3;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #005bb5;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 50px;
+  color: #777;
+  font-size: 16px;
+}
+
+.upload-status {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+  color: #fff;
+  background-color: #007bff; /* Default blue for success */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  white-space: pre-wrap;
+}
+
+.upload-status.success {
+  background-color: #28a745; /* Green for success */
+}
+
+.upload-status.unknown {
+  background-color: #9d9d9d; /* grey for unknown */
+}
+
+.upload-status.uploading {
+  background-color: #9d9d9d; /* grey for unknown */
+}
+
+.upload-status.error {
+  background-color: #dc3545; /* Red for errors */
+}
+
+/* Base64 Output Styling */
+.base64-output {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease-in-out;
+}
+
+.base64-output.visible {
+  opacity: 1;
+}
+
+.base64-output:not(.visible) {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.base64-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.base64-container {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  padding: 0.5rem;
+}
+
+.base64-textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  resize: none;
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: #555;
+  background-color: transparent;
+  outline: none;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
