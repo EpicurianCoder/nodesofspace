@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { DataSet, Network } from 'vis-network/standalone/umd/vis-network.min';
 import { createClient } from '@supabase/supabase-js';
 import 'vis-network/styles/vis-network.css';
+import { FiPlus } from 'react-icons/fi';
+import Swal from 'sweetalert2';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -14,13 +16,14 @@ const supabase = createClient(
 const VisGraph = () => {
   const containerRef = useRef(null);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [nodeDescription, setNodeDescription] = useState('');
   const router = useRouter();
 
   useEffect(() => {
     const fetchAndRenderGraph = async () => {
       const { data: items, error } = await supabase
         .from('Items')
-        .select('id, name');
+        .select('id, name, description, location, categories');
 
       if (error) {
         console.error('Error fetching nodes:', error);
@@ -31,6 +34,9 @@ const VisGraph = () => {
       const nodesArray = items.map((item) => ({
         id: item.id,
         label: item.name || `Item ${item.id}`,
+        description: item.description || '',
+        location: item.location || '',
+        categories: item.categories || ''
       }));
 
       // Create random edges
@@ -88,19 +94,38 @@ const VisGraph = () => {
     router.push('/upload'); // Navigate to the upload image page
   };
 
+  const handleFullDetails = () => {
+    // adds the following ro the node details info pop-up
+    const { id, description, location, categories } = selectedNode;
+    const nodeDescription = `
+      Description: ${description}<br><br>
+      Location: ${location}<br><br>
+      Categories: ${categories}<br>
+    `;
+    Swal.fire({
+              title: 'Full Node Details',
+              html: nodeDescription,
+              icon: 'info',
+              confirmButtonText: 'OK'
+            });
+  };
+
   return (
     <div>
       <div ref={containerRef} style={{ height: '600px' }} />
       {selectedNode && (
-        <div style={{ marginTop: '20px' }}>
-          <h3>Node Details</h3>
-          <p><strong>ID:</strong> {selectedNode.id}</p>
-          <p><strong>Label:</strong> {selectedNode.label}</p>
+        <div className="floating-node-details">
+          <h3>Node Details</h3><br/>
+          <p><strong>ID:</strong> {selectedNode.id}</p><br/>
+          <p><strong>Label:</strong> {selectedNode.label}</p><br/>
+          <button onClick={handleFullDetails}>View Full Details</button>
           <button onClick={handleEditClick}>Edit</button>
         </div>
       )}
       <div style={{ marginTop: '20px' }}>
-        <button onClick={handleUploadClick}>Add Node</button>
+        <button className="floating-add-button" onClick={handleUploadClick}>
+          <FiPlus className="add-icon" /> Add Node
+        </button>
       </div>
     </div>
   );

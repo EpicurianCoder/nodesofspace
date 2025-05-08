@@ -13,6 +13,7 @@ export default function UploadForm() {
   const [base64Image, setBase64Image] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [location, setLocation] = useState('');
+  const [quantity, setQuantity] = useState(1);
   const router = useRouter();
 
   const handleFileChange = (e) => {
@@ -129,12 +130,12 @@ export default function UploadForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ labels, location, base64Image }), // Send the labels as JSON
+        body: JSON.stringify({ labels, location, base64Image, quantity }), // Send the labels as JSON
       });
 
       const data = await response.json();
-      const labels_new = data.processedData.labelAnnotations;
-      console.log('Response from API:', labels_new);
+      // const labels_new = data.processedData.labelAnnotations;
+      // console.log('Response from API:', labels_new);
   
       if (response.ok) {
         console.log(data.message); // Print the message to the console
@@ -223,6 +224,15 @@ export default function UploadForm() {
             onChange={(e) => setLocation(e.target.value)}
             className="location-input"
             placeholder="Enter location"
+          />
+          <label htmlFor="quantity" className="quantity-label">Quantity:</label>
+          <input
+            type="number"
+            id="quantity"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            className="quantity-input"
+            placeholder="Enter quantity"
           />
           <button
             onClick={handleSubmit}

@@ -1,11 +1,11 @@
 import EditForm from '@/components/EditForm';
-import Navbar from '@/components/Navbar';
+import NavbarLite from '@/components/NavbarLite';
 
 export default async function EditPage({ searchParams }) {
   const id = await searchParams?.id;
   return (
     <>
-      <Navbar />
+      <NavbarLite />
       <main className="container">
           <h1 className="header">Network Graph</h1>
           <EditForm id={id} />

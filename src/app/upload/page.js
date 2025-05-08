@@ -1,11 +1,11 @@
 'use client';
 import UploadForm from '@/components/UploadForm';
-import Navbar from '@/components/Navbar';
+import NavbarLite from '@/components/NavbarLite';
 
 export default function UploadPage() {
   return (
     <>
-      <Navbar />
+      <NavbarLite />
       <main className="container">
         <h1 className="header">Upload Image</h1>
         <UploadForm />

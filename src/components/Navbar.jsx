@@ -14,7 +14,7 @@ export default function Navbar() {
           <FiHome className="navbar-icon" /> Nodes Of Space
         </Link>
         <Link href="/" className="navbar-link navbar-right">
-          <FiLogOut className="navbar-icon" /> Logout
+          <FiLogOut className="navbar-icon" /> Exit
         </Link>
       </div>
     </nav>
