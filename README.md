@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NodeGraph Interface
 
-## Getting Started
+A powerful visual database management tool built with **Next.js**. NodeGraph lets users interactively add, tag, and connect image-based data in a live graph interface. Ideal for research, media archives, design planning, and any workflow requiring structured visual thinking.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+- Add nodes with text, tags, and images
+- Upload and analyze images via AI for auto-tagging
+- Assign categories, descriptions, and quantities
+- Visualize connections between related nodes in a graph
+- Edit and delete nodes through a smooth UI
+- Store and retrieve all data through a persistent database
+- Full support for web-based interaction with real-time updates
+
+---
+
+## 🛠 Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/nodegraph-interface.git
+cd nodegraph-interface
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env.local` file in the root of the project and add the following (update with your own values):
+
+```
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+VISION_API_KEY=your-google-cloud-vision-api-key
+```
+
+### 4. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000` to view the app.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 5. Build and run for production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+/pages         → Application routes and API endpoints
+/components    → UI building blocks
+/lib           → Utilities and helper logic
+/styles        → Global and module-based styles
+/public        → Static assets
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 💡 Example Workflow
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Click **Add Node** to create a new entry
+2. Upload an image or file
+3. Process image for recognition and suggested tags
+4. Add location, quantity, and other metadata
+5. Submit the node to store it in the database
+6. Watch connections form on the interactive graph
+7. Edit or delete any node in real time
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📄 License
+
+MIT License – feel free to use, modify, and distribute.
+
+---
+
+## 📬 Contact
+
+Questions, ideas, or feedback? Reach out at [you@example.com](mailto:you@example.com)
