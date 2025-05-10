@@ -3,22 +3,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { DataSet, Network } from 'vis-network/standalone/umd/vis-network.min';
-import { createClient } from '@supabase/supabase-js';
 import 'vis-network/styles/vis-network.css';
 import { FiPlus } from 'react-icons/fi';
 import { DiGoogleCloudPlatform } from "react-icons/di";
 import Swal from 'sweetalert2';
 import { renderToStaticMarkup } from 'react-dom/server';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+import supabase from '@/lib/supabaseClient';
 
 const VisGraph = () => {
   const containerRef = useRef(null);
   const [selectedNode, setSelectedNode] = useState(null);
-  const [nodeDescription, setNodeDescription] = useState('');
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 

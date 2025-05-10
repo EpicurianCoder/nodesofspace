@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import supabase from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 
@@ -14,13 +14,7 @@ export default function EditForm({ id }) {
     location: '',
     categories: ''
   });
-  const [message, setMessage] = useState('');
   const router = useRouter();
-
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
 
   useEffect(() => {
     const fetchData = async () => {

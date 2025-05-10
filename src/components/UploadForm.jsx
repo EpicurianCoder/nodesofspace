@@ -3,12 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-import { createClient } from '@supabase/supabase-js';
+import supabase from '@/lib/supabaseClient';
 
 export default function UploadForm() {
   const VISION_API = process.env.NEXT_PUBLIC_VISION_API;
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fullDescription, setFullDescription] = useState('');
   const [previewUrl, setPreviewUrl] = useState('');
   const [status, setStatus] = useState('unknown');
   const [labels, setLabels] = useState(null);
@@ -18,10 +17,6 @@ export default function UploadForm() {
   const [quantity, setQuantity] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -87,8 +82,6 @@ export default function UploadForm() {
             ]
         };
         const image = { content: base64Image };
-        // log vision API key
-        console.log('Vision API Key:', VISION_API);
         const res = await fetch(VISION_API, {
           method: 'POST',
           headers: {
