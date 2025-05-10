@@ -236,6 +236,17 @@ a {
   transition: background-color 0.3s;
 }
 
+.upload-label.disabled {
+  background-color: #d3d3d3; /* Light grey background */
+  color: #a9a9a9; /* Grey text */
+  cursor: not-allowed; /* Change cursor to indicate it's disabled */
+  pointer-events: none; /* Prevent any interaction */
+}
+
+.upload-input.disabled {
+  pointer-events: none; /* Prevent interaction with the input */
+}
+
 .upload-label:hover {
   background-color: #2980b9;
 }

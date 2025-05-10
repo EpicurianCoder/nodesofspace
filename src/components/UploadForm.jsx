@@ -16,6 +16,7 @@ export default function UploadForm() {
   const [isDragging, setIsDragging] = useState(false);
   const [location, setLocation] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -65,6 +66,7 @@ export default function UploadForm() {
   const handleUpload = async () => {
     if (!selectedFile) return;
 
+    setIsProcessing(true); // Disable the file input and grey out the button
     setStatus('Uploading...');
 
     // Convert file to base64
@@ -97,6 +99,7 @@ export default function UploadForm() {
         const data = await res.json();
         if (!data.responses || !data.responses[0].labelAnnotations) {
           setStatus('Image not recognized');
+          setIsProcessing(false); // Re-enable the file input if processing fails
           return;
         }
         console.log('Response from Vision API:', data.responses[0]);
@@ -136,7 +139,7 @@ export default function UploadForm() {
   }, [previewUrl]);
 
   const handleCancel = () => {
-    router.push('/upload');
+    window.location.reload();
   };
 
   const handleSubmit = async () => {
@@ -202,11 +205,12 @@ export default function UploadForm() {
           id="fileUpload"
           accept="image/*"
           onChange={handleFileChange}
-          className="upload-input"
+          className={`upload-input ${isProcessing ? 'disabled' : ''}`}
+          disabled={!!selectedFile} /* Disable the input if a file is selected */
         />
         <label
           htmlFor="fileUpload"
-          className="upload-label"
+          className={`upload-label ${isProcessing ? 'disabled' : ''}`}
         >
           Choose File
         </label>
