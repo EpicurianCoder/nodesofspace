@@ -4,6 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 import supabase from '@/lib/supabaseClient';
+import Base64output from '@/components/Base64output';
+import SubmitActions from '@/components/SubmitActions';
+import UploadActions from '@/components/UploadActions';
+import FileUpload from '@/components/FileUpload';
+import UploadStatus from '@/components/UploadStatus';
+import ProcessAction from '@/components/ProcessAction';
 
 export default function UploadForm() {
   const VISION_API = process.env.NEXT_PUBLIC_VISION_API;
@@ -12,42 +18,10 @@ export default function UploadForm() {
   const [status, setStatus] = useState('unknown');
   const [labels, setLabels] = useState(null);
   const [base64Image, setBase64Image] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [location, setLocation] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-    } else {
-      setPreviewUrl('');
-    }
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-  
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
-  
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      setSelectedFile(file);
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-    }
-  };
 
   async function uploadFile(file, imagePath) {
     const { data, error } = await supabase.storage.from('nothings').upload(imagePath, file)
@@ -186,68 +160,23 @@ export default function UploadForm() {
 
   return (
     <div className="upload-form">
-      <div
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        className={`upload-drop-zone ${isDragging ? 'dragging' : ''}`}
-      >
-        <input
-          type="file"
-          id="fileUpload"
-          accept="image/*"
-          onChange={handleFileChange}
-          className={`upload-input ${isProcessing ? 'disabled' : ''}`}
-          disabled={!!selectedFile}
-        />
-        <label
-          htmlFor="fileUpload"
-          className={`upload-label ${isProcessing ? 'disabled' : ''}`}
-        >
-          Choose File
-        </label>
-        <p className="upload-instruction">
-          ...or drag and drop an image here
-        </p>
-        {selectedFile && <p className="upload-file-name">Uploaded File: {selectedFile.name}</p>}
-      </div>
-      {!labels && (
-        <div className="process-action">
-          <button
-            onClick={handleUpload}
-            className="upload-button"
-          >
-            Process Image
-          </button>
-        </div>
-      )}
+      <FileUpload
+        selectedFile={selectedFile}
+        setSelectedFile={setSelectedFile}
+        setPreviewUrl={setPreviewUrl}
+        isProcessing={isProcessing}
+      />
+      {!labels && <ProcessAction handleUpload={handleUpload} />}
       {labels && (
-        <div className="upload-actions">
-          <label htmlFor="location" className="location-label">Location:</label>
-          <input
-            type="text"
-            id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="location-input"
-            placeholder="Enter location"
+        <>
+          <UploadActions
+            location={location}
+            setLocation={setLocation}
+            quantity={quantity}
+            setQuantity={setQuantity}
           />
-          <label htmlFor="quantity" className="quantity-label">Quantity:</label>
-          <input
-            type="number"
-            id="quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            className="quantity-input"
-            placeholder="Enter quantity"
-          />
-        </div>
-      )}
-      {labels && (
-        <div className="submit-actions">
-          <button onClick={handleSubmit} className="submit-button">Submit</button>
-          <button onClick={handleCancel} className="cancel-button">Cancel</button>
-        </div>
+          <SubmitActions handleSubmit={handleSubmit} handleCancel={handleCancel} />
+        </>
       )}
       {previewUrl && (
         <img
@@ -256,19 +185,8 @@ export default function UploadForm() {
           className="upload-preview"
         />
       )}
-      <div className={`base64-output ${base64Image ? 'visible' : ''}`}>
-        <h3 className="base64-title">Base64 Representation</h3>
-        <div className="base64-container">
-          <textarea
-            readOnly
-            value={base64Image || ''}
-            className="base64-textarea"
-          />
-        </div>
-      </div>
-      <div className={`upload-status ${status.includes('Error') ? 'error' : status === 'unknown' || status === 'Uploading...' ? 'unknown' : 'success'} ${status ? 'visible' : ''}`}>
-        {status === 'unknown' ? 'Awaiting processing...' : status || 'No status yet.'}
-      </div>
+      <Base64output base64Image={base64Image} />
+      <UploadStatus status={status} />
     </div>
   );
 }
