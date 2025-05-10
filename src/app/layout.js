@@ -14,8 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Nodes Of Space",
-  description: "So much space for your nodes",
-  themeColor: "#1a1a1a",
+  description: "So much space for your nodes"
 };
 
 export default function RootLayout({ children }) {
