@@ -516,63 +516,110 @@ button[type="submit"]:hover {
   font-size: 1.25rem; /* Adjust icon size */
 }
 
+.landing-container {
+  width: 100vw; /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  padding: 2rem; /* Add padding for spacing */
+  box-sizing: content-box;
+}
+
 /* Landing Page Styling */
 .landing-page {
-  max-width: 800px;
+  max-width: auto;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), /* Transparent gradient overlay */
+    url('/images/screen-shot-2016-07-03-at-10-32-05-pm.webp'),
+    url('/images/screen-shot-2016-07-03-at-10-32-05-pm.webp');
+    background-size: 200% 200%, 130%, 130%; /* Set the size for both images */
+    background-position: -600px -10px, 300px 1500px; /* Position the first and second images */
+    background-repeat: no-repeat, no-repeat, no-repeat; /* Prevent additional repeats */
 }
 
 .landing-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: #333;
 }
 
 .landing-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.2rem; /* Increase font size for better visibility */
   margin-bottom: 2rem;
   color: #555;
+  line-height: 1.8;
+  padding: 1.5rem; /* Add padding inside the box */
+  background-color:rgba(249, 249, 249, 0.5); /* Light background with 70% opacity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-radius: 12px; /* Rounded corners */
+  text-align: center; /* Center-align the text */
+  max-width: 90%; /* Limit the width for readability */
+  margin: 0 auto 2rem; /* Center the box and add spacing below */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .steps-container {
   display: flex;
+  padding: 2rem;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2rem; /* Add spacing between steps */
 }
 
 .step {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 2rem;
 }
 
 .step-left {
-  flex-direction: row;
+  align-self: flex-start; /* Align to the left */
+  padding-left: 10rem;
 }
 
 .step-right {
-  flex-direction: row-reverse;
+  align-self: flex-end; /* Align to the right */
+  padding-right: 10rem;
 }
 
 .step-number {
-  font-size: 1.5rem;
+  font-size: 3rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background-color: #e0e7ff;
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
   font-weight: bold;
-  color: #007bff;
-  margin: 0 1rem;
+  color: #3c3f44; 
+  margin-bottom: 1rem;
 }
 
-.step-text {
-  font-size: 1.125rem;
-  color: #333;
-  text-align: left;
+/* Larger and more prominent step text */
+.step-text-1 {
+  max-width: 60%;
+  font-size: 1.75rem; /* Increase font size for the header */
+  font-weight: bold;
+  color: #333; /* Darker color for the header */
+  margin-bottom: 0.75rem; /* Add more spacing below */
+  text-align: center; /* Center-align the text */
+}
+
+.step-text-2 {
+  max-width: 60%;
+  font-size: 1.25rem; /* Increase font size for the explanation */
+  font-weight: normal;
+  color: #555; /* Lighter color for the explanation */
+  line-height: 1.8; /* Improve readability with increased line height */
+  text-align: center; /* Center-align the text */
+  background-color:rgba(249, 249, 249, 0.7); /* Light background with 70% opacity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 1.5rem; /* Add padding inside the box */
 }
 
 .loading-overlay {
@@ -614,4 +661,51 @@ button[type="submit"]:hover {
   width: 100%;     /* or a fixed value like 300px */
   max-width: 200px;
   height: auto;
+}
+
+.step-by-step {
+  position: fixed; /* Fix the element to the viewport */
+  bottom: 20px; /* Position it 20px from the bottom of the screen */
+  left: 50%; /* Center it horizontally */
+  transform: translateX(-50%); /* Adjust for centering */
+  background-color: #007bff; /* Blue background for visibility */
+  color: #fff; /* White text for contrast */
+  padding: 1rem 2rem; /* Add padding for spacing */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  font-size: 1.25rem; /* Adjust font size for readability */
+  font-weight: bold; /* Make the text bold */
+  z-index: 1000; /* Ensure it appears above other elements */
+  text-align: center; /* Center-align the text */
+}
+
+.button-container {
+  position: fixed; /* Fix the button to the viewport */
+  bottom: 20px; /* Position it 20px from the bottom of the screen */
+  right: 20px; /* Position it 20px from the right of the screen */
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.get-started-button {
+  font-weight: bold;
+  padding: 1rem 2rem; /* Add padding for spacing */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  background-color: #e0e7ff; /* Light blue background */
+  color: #ffffff; /* Darker text color for contrast */
+  background-color: #53b45a;
+  font-size: 1rem; /* Adjust font size for readability */
+  font-weight: bold; /* Make the text bold */
+  text-decoration: none; /* Remove underline */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effects */
+}
+
+.get-started-button:hover {
+  transform: translateY(-3px); /* Slight lift on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+  background-color: #36a33d; /* Darker blue on hover */
+  color: #000000;
 }

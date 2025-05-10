@@ -8,6 +8,7 @@ import { createClient } from '@supabase/supabase-js';
 export default function UploadForm() {
   const VISION_API = process.env.NEXT_PUBLIC_VISION_API;
   const [selectedFile, setSelectedFile] = useState(null);
+  const [fullDescription, setFullDescription] = useState('');
   const [previewUrl, setPreviewUrl] = useState('');
   const [status, setStatus] = useState('unknown');
   const [labels, setLabels] = useState(null);
@@ -76,7 +77,10 @@ export default function UploadForm() {
             requests: [
                 {
                     image: { content: base64Image },
-                    features: [{ type: "LABEL_DETECTION", maxResults: 10 }]
+                    features: [
+                      { type: "LABEL_DETECTION", maxResults: 30 },
+                      { type: "WEB_DETECTION", maxResults : 10 }
+                    ]
                 }
             ]
         };
@@ -98,14 +102,21 @@ export default function UploadForm() {
         console.log('Response from Vision API:', data.responses[0]);
         
         const labels = data.responses[0].labelAnnotations;
+        const webDetection = data.responses[0].webDetection;
 
-        let full_description = '';
+        let fullDescription = '';
+        fullDescription +=`Primary Identitfication Labels: \n`;
         for (const label of labels) {
-            console.log(`Label: ${label.description}, Score: ${label.score}`);
-            full_description += `${label.description} (${(label.score * 100).toFixed(2)}%) \n`;
+            console.log(`Primary Identitfication Label: ${label.description}, Score: ${label.score}`);
+            fullDescription +=`${label.description} (${(label.score * 100).toFixed(2)}%) \n`;
+        }
+        fullDescription +=`Secondary Web Detection Labels: \n`;
+        for (const entity of webDetection.webEntities) {
+            console.log(`Secondary Web Detection Label: ${entity.description}, Score: ${entity.score}`);
+            fullDescription += `${entity.description} (${(entity.score * 100).toFixed(2)}%) \n`;
         }
         setLabels(data.responses[0].labelAnnotations);
-        setStatus(`Upload complete! \n\n ${full_description}`);
+        setStatus(`Upload complete! \n\n ${fullDescription}`);
       } catch (err) {
         setStatus('Error uploading image');
         console.error(err);
