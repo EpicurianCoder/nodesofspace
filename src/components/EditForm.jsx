@@ -68,7 +68,7 @@ export default function EditForm({ id }) {
         icon: 'success',
         confirmButtonText: 'OK'
       });
-      router.push('/graph'); // Navigate back to the graph
+      router.push('/graph');
     }
   };
 

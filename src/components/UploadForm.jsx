@@ -154,7 +154,6 @@ export default function UploadForm() {
     }
     try {
       const randomNumber = Math.floor(Math.random() * 1000000);
-      // change label to actual gemini detemined name
       const imagePath = `${labels[0].description}_${randomNumber}.jpg`;
       uploadFile(selectedFile, imagePath);
       const response = await fetch('/api/create', {
@@ -162,29 +161,29 @@ export default function UploadForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ labels, location, quantity, imagePath }), // Send the labels as JSON
+        body: JSON.stringify({ labels, location, quantity, imagePath }),
       });
 
       const data = await response.json();
   
       if (response.ok) {
-        console.log(data.message); // Print the message to the console
+        console.log(data.message);
         Swal.fire({
           title: 'Database Notification',
           text: data.message,
           icon: 'success',
           confirmButtonText: 'OK'
         });
-        router.push('/graph'); // Navigate back to the graph
+        router.push('/graph');
       } else {
-        console.error(data.message); // Print error message to the console
+        console.error(data.message);
         Swal.fire({
           title: 'Database Notification',
           text: data.message,
           icon: 'failure',
           confirmButtonText: 'OK'
         });
-        router.push('/upload'); // Navigate back to the upload start
+        router.push('/upload');
       }
     } catch (error) {
       console.error('Error submitting labels:', error);
@@ -206,7 +205,7 @@ export default function UploadForm() {
           accept="image/*"
           onChange={handleFileChange}
           className={`upload-input ${isProcessing ? 'disabled' : ''}`}
-          disabled={!!selectedFile} /* Disable the input if a file is selected */
+          disabled={!!selectedFile}
         />
         <label
           htmlFor="fileUpload"

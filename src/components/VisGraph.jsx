@@ -24,7 +24,7 @@ const VisGraph = () => {
 
   useEffect(() => {
     const fetchAndRenderGraph = async () => {
-      setLoading(true); // Set loading to true before rendering
+      setLoading(true);
 
       const { data: items, error } = await supabase
         .from('Items')
@@ -43,7 +43,6 @@ const VisGraph = () => {
 
       const base64IconPlus = convertIconToBase64(DiGoogleCloudPlatform);
 
-      // Format nodes for vis-network
       const nodesArray = items.map((item) => ({
         id: item.id,
         label: item.name || `Item ${item.id}`,
@@ -54,7 +53,6 @@ const VisGraph = () => {
         image: base64IconPlus
       }));
 
-      // Create random edges
       const edgesArray = [];
       for (let i = 0; i < nodesArray.length; i++) {
         const sourceId = nodesArray[i].id;
@@ -105,7 +103,6 @@ const VisGraph = () => {
           minVelocity: 0.75, // Minimum velocity for node movement
         },
       };
-      // shape: 'dot' --> shape: 'image' for image nodes
 
       const network = new Network(containerRef.current, data, options);
 
@@ -116,7 +113,6 @@ const VisGraph = () => {
         }
       });
 
-      // Listen for node selection event
       network.on('select', function(event) {
         const { nodes: clickedNodes } = event;
         if (clickedNodes.length == 1) {
@@ -130,7 +126,6 @@ const VisGraph = () => {
         console.log('Selected nodes:', event.nodes);
       });
 
-      // Optional: Listen for deselection events to reset selections
       network.on('deselect', function(event) {
         setSelectedNode(null);
         console.log('Deselected nodes:', event.nodes);
@@ -150,7 +145,7 @@ const VisGraph = () => {
   };
 
   const handleUploadClick = () => {
-    router.push('/upload'); // Navigate to the upload image page
+    router.push('/upload');
   };
 
   const handleDelete = () => {
@@ -165,15 +160,12 @@ const VisGraph = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // Send DELETE request to the API
           const response = await fetch(`/api/delete?id=${selectedNode.id}`, {
             method: 'DELETE',
           });
   
           if (response.ok) {
-            // force page reload
             Swal.fire('Deleted!', 'The node has been deleted.', 'success').then(() => {
-              // Reload the page after the confirmation dialog is closed
               window.location.reload();
             });
           } else {
