@@ -41,6 +41,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 VISION_API_KEY=your-google-cloud-vision-api-key
 ```
 
+This will also require that one sets up a supabase table called `Items` for data and supabase storage named `nothings` for images
+
 ### 4. Run the development server
 
 ```bash
