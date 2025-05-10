@@ -1,0 +1,266 @@
+{
+  "FunctionalUse": {
+    "Apparel and Personal Accessories": [
+      "Clothing",
+      "Footwear",
+      "Jewelry",
+      "Eyewear",
+      "Headwear",
+      "Belts",
+      "Watches",
+      "Personal Adornments"
+    ],
+    "Tools and Equipment": [
+      "Hand Tools",
+      "Power Tools",
+      "Measuring Devices",
+      "Cutting Implements",
+      "Fastening Tools",
+      "Maintenance Equipment",
+      "Precision Tools"
+    ],
+    "Containers and Storage": [
+      "Box",
+      "Bag",
+      "Case",
+      "Jar",
+      "Bin",
+      "Closures",
+      "Protective Enclosures"
+    ],
+    "Communication and Technology": [
+      "Computing Devices",
+      "Audio Equipment",
+      "Video Devices",
+      "Input Peripherals",
+      "Output Devices",
+      "Networking Hardware",
+      "Circuit Components"
+    ],
+    "Furniture and Fixtures": [
+      "Seating",
+      "Tables",
+      "Storage Furniture",
+      "Beds",
+      "Lighting",
+      "Shelving",
+      "Modular Components"
+    ],
+    "Homewares and Domestic Items": [
+      "Cookware",
+      "Utensils",
+      "Serving Items",
+      "Linens",
+      "Cleaning Tools",
+      "Appliances",
+      "Decorative Objects"
+    ],
+    "Transportation and Mobility": [
+      "Vehicle Components",
+      "Personal Transport",
+      "Supportive Accessories",
+      "Navigation Tools",
+      "Safety Gear"
+    ],
+    "Creative and Hobby Materials": [
+      "Art Supplies",
+      "Musical Instruments",
+      "Crafting Materials",
+      "Workshop Components",
+      "Modeling Items",
+      "Performance Props"
+    ],
+    "Outdoor and Sporting Gear": [
+      "Athletic Equipment",
+      "Camping Supplies",
+      "Climbing Gear",
+      "Gardening Tools",
+      "Protective Gear",
+      "Weather Protection"
+    ],
+    "Medical and Wellness": [
+      "Health Devices",
+      "Personal Care Tools",
+      "Mobility Aids",
+      "Orthotic Equipment",
+      "Fitness Monitors"
+    ],
+    "Packaging and Presentation": [
+      "Retail Packaging",
+      "Display Props",
+      "Gift Wrapping",
+      "Protective Inserts",
+      "Labeling Items"
+    ],
+    "Documentation and Records": [
+      "Printed Media",
+      "Photographic Items",
+      "Archival Storage",
+      "Bound Material",
+      "Identification Items"
+    ],
+    "Ritual and Symbolic Items": [
+      "Religious Items",
+      "Ceremonial Tools",
+      "Cultural Symbols",
+      "Ancestral Tokens"
+    ],
+    "Infrastructure and Installation": [
+      "Wiring Systems",
+      "Piping Components",
+      "Fixtures",
+      "Mounting Systems",
+      "Architectural Elements"
+    ]
+  },
+  "Composition": {
+    "PrimaryMaterials": {
+      "Organic": [
+        "Natural Fiber",
+        "Processed Plant",
+        "Animal-Derived",
+        "Cellulose-Based",
+        "Natural Pulp",
+        "Grain Material"
+      ],
+      "Inorganic": [
+        "Metallic",
+        "Synthetic Polymer",
+        "Amorphous Solid",
+        "Crystalline Solid",
+        "Kiln-Fired",
+        "Aggregate Mix"
+      ],
+      "Composite": [
+        "Embedded Circuit",
+        "Textile Blend",
+        "Porous Sponge",
+        "Layered Sheet",
+        "Cured Cast",
+        "Fiber-Reinforced"
+      ]
+    },
+    "ComponentCount": [
+      "Single Unit",
+      "Modular Elements",
+      "Multi-Part Object",
+      "Mechanized Assembly",
+      "Grouped Items",
+      "Instruction-Based Assembly"
+    ],
+    "Complexity": [
+      "Minimal",
+      "Detail-Oriented",
+      "Mechanical",
+      "Electromechanical",
+      "Fully Digital",
+      "Bio-Integrated"
+    ]
+  },
+  "PhysicalAttributes": {
+    "Size": ["Minute", "Compact", "Moderate", "Bulky", "Massive", "Oversized"],
+    "Shape": [
+      "Planar",
+      "Globular",
+      "Tube-Like",
+      "Box-Like",
+      "Irregular Form",
+      "Collapsible",
+      "Stack-Enabled"
+    ],
+    "Weight": ["Ultra-Light", "Lightweight", "Standard", "Heavy", "Overweight"],
+    "Fragility": [
+      "Breakable",
+      "Durable",
+      "Stretchable",
+      "Snappable",
+      "Bendable",
+      "Stiff"
+    ]
+  },
+  "OriginProvenance": {
+    "Manufacture": [
+      "Crafted",
+      "Factory-Made",
+      "Individually Commissioned",
+      "Additive Fabrication",
+      "Hand-Tooled",
+      "Reused Material"
+    ],
+    "Age": [
+      "Recently Created",
+      "Contemporary",
+      "Historically Used",
+      "Collectible Age",
+      "Preserved Artifact",
+      "Prehistoric Era"
+    ],
+    "GeographicOrigin": [
+      "Africa-Origin",
+      "Asia-Origin",
+      "Europe-Origin",
+      "NA-Origin",
+      "SA-Origin",
+      "Oceania-Origin",
+      "Polar-Origin"
+    ],
+    "CulturalStyle": [
+      "Nordic",
+      "Eastern",
+      "Functionalist",
+      "Ornate",
+      "Minimal",
+      "Dark Age",
+      "Geometric Deco",
+      "Industrialist",
+      "Tribal Patterned",
+      "Colonial Inspired",
+      "Post-War Modernist"
+    ]
+  },
+  "OwnershipStatus": {
+    "Rarity": [
+      "Mass-Made",
+      "Low Distribution",
+      "Scarce",
+      "Only Instance",
+      "Experimental",
+      "Custom Crafted"
+    ]
+  },
+  "SemanticTags": {
+    "AssociatedActivity": [
+      "Literary",
+      "Culinary",
+      "Mindfulness",
+      "Recreational",
+      "Professional",
+      "Educational",
+      "Outdoor",
+      "Resting",
+      "Interior Styling",
+      "Hosting",
+      "Creative Writing",
+      "Tidying"
+    ],
+    "SymbolicMeaning": [
+      "Faith-Based",
+      "National Identity",
+      "Emotional Value",
+      "Ritualistic",
+      "Traditional Ceremony",
+      "Folkloric",
+      "Cultural Belief"
+    ],
+    "TaxonomicClass": [
+      "Zoological",
+      "Botanical",
+      "Mycological",
+      "Geological",
+      "Artificial",
+      "Preserved Lifeform",
+      "Microbial Agent",
+      "Chemical Substance"
+    ]
+  }
+}
