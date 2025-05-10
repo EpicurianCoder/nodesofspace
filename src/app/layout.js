@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import MobileMetaTags from '@/components/MobileMetaTags';
 
 
 const geistSans = Geist({
@@ -23,7 +22,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <MobileMetaTags />
         {children}
       </body>
     </html>
