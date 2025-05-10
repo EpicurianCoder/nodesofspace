@@ -15,6 +15,9 @@ const VisGraph = () => {
   const [selectedNode, setSelectedNode] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const [nodesArray, setNodesArray] = useState([]);
+  const [dropdownValue, setDropdownValue] = useState('');
+  const networkRef = useRef(null);
 
   useEffect(() => {
     const fetchAndRenderGraph = async () => {
@@ -45,7 +48,8 @@ const VisGraph = () => {
         categories: item.categories || '',
         svg_url: item.svg_url || '',
         image: base64IconPlus
-      }));
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
 
       const edgesArray = [];
       for (let i = 0; i < nodesArray.length; i++) {
@@ -99,6 +103,7 @@ const VisGraph = () => {
       };
 
       const network = new Network(containerRef.current, data, options);
+      networkRef.current = network;
 
       network.on('click', (event) => {
         const { nodes: clickedNodes } = event;
@@ -122,9 +127,11 @@ const VisGraph = () => {
 
       network.on('deselect', function(event) {
         setSelectedNode(null);
+        setSelectedValue("");
         console.log('Deselected nodes:', event.nodes);
       });
 
+      setNodesArray(nodesArray);
       setLoading(false);
       return () => network.destroy();
     };
@@ -230,6 +237,39 @@ const VisGraph = () => {
         <button className="floating-add-button" onClick={handleUploadClick}>
           <FiPlus className="add-icon" /> Add Node
         </button>
+      </div>
+      <div className ="select-node">
+        <select
+          value={dropdownValue}
+          className="node-select"
+          onChange={(e) => {
+            const nodeId = e.target.value;
+            if (nodeId) {
+              const node = nodesArray.find((n) => n.id === parseInt(nodeId));
+              if (node) {
+                setSelectedNode(node);
+                // Highlight the node
+                if (networkRef.current) {
+                  networkRef.current.selectNodes([node.id]); // Highlight the node
+                  networkRef.current.focus(node.id, {
+                    scale: 0.8, // Zoom
+                    animation: { duration: 500 },
+                  });
+                }
+              }
+              setDropdownValue('');
+            }
+          }}
+        >
+          <option value="" disabled>
+            Find a node...
+          </option>
+          {nodesArray.map((node) => (
+            <option key={node.id} value={node.id}>
+              {node.label}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
