@@ -136,7 +136,7 @@ export default function UploadForm() {
   }, [previewUrl]);
 
   const handleCancel = () => {
-    router.push('/');
+    router.push('/upload');
   };
 
   const handleSubmit = async () => {
