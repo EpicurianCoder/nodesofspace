@@ -110,13 +110,13 @@ export default function UploadForm() {
             console.log(`Primary Identitfication Label: ${label.description}, Score: ${label.score}`);
             fullDescription +=`${label.description} (${(label.score * 100).toFixed(2)}%) \n`;
         }
-        fullDescription +=`Secondary Web Detection Labels: \n`;
+        fullDescription +=`\nSecondary Web Detection Labels: \n`;
         for (const entity of webDetection.webEntities) {
             console.log(`Secondary Web Detection Label: ${entity.description}, Score: ${entity.score}`);
             fullDescription += `${entity.description} (${(entity.score * 100).toFixed(2)}%) \n`;
         }
         setLabels(data.responses[0].labelAnnotations);
-        setStatus(`Upload complete! \n\n ${fullDescription}`);
+        setStatus(`Image Processing complete! \n\n ${fullDescription}`);
       } catch (err) {
         setStatus('Error uploading image');
         console.error(err);
@@ -215,32 +215,16 @@ export default function UploadForm() {
         </p>
         {selectedFile && <p className="upload-file-name">Uploaded File: {selectedFile.name}</p>}
       </div>
-      {previewUrl && (
-        <img
-          src={previewUrl}
-          alt="Selected preview"
-          className="upload-preview"
-        />
-      )}
-      <button
-        onClick={handleUpload}
-        className="upload-button"
-      >
-        Process Image
-      </button>
-      <div className={`base64-output ${base64Image ? 'visible' : ''}`}>
-        <h3 className="base64-title">Base64 Representation</h3>
-        <div className="base64-container">
-          <textarea
-            readOnly
-            value={base64Image || ''}
-            className="base64-textarea"
-          />
+      {!labels && (
+        <div className="process-action">
+          <button
+            onClick={handleUpload}
+            className="upload-button"
+          >
+            Process Image
+          </button>
         </div>
-      </div>
-      <div className={`upload-status ${status.includes('Error') ? 'error' : status === 'unknown' || status === 'Uploading...' ? 'unknown' : 'success'}`}>
-        {status === 'unknown' ? 'Awaiting processing...' : status || 'No status yet.'}
-      </div>
+      )}
       {labels && (
         <div className="upload-actions">
           <label htmlFor="location" className="location-label">Location:</label>
@@ -261,20 +245,34 @@ export default function UploadForm() {
             className="quantity-input"
             placeholder="Enter quantity"
           />
-          <button
-            onClick={handleSubmit}
-            className="submit-button"
-          >
-            Submit
-          </button>
-          <button
-            onClick={handleCancel}
-            className="cancel-button"
-          >
-            Cancel
-          </button>
         </div>
       )}
+      {labels && (
+        <div className="submit-actions">
+          <button onClick={handleSubmit} className="submit-button">Submit</button>
+          <button onClick={handleCancel} className="cancel-button">Cancel</button>
+        </div>
+      )}
+      {previewUrl && (
+        <img
+          src={previewUrl}
+          alt="Selected preview"
+          className="upload-preview"
+        />
+      )}
+      <div className={`base64-output ${base64Image ? 'visible' : ''}`}>
+        <h3 className="base64-title">Base64 Representation</h3>
+        <div className="base64-container">
+          <textarea
+            readOnly
+            value={base64Image || ''}
+            className="base64-textarea"
+          />
+        </div>
+      </div>
+      <div className={`upload-status ${status.includes('Error') ? 'error' : status === 'unknown' || status === 'Uploading...' ? 'unknown' : 'success'} ${status ? 'visible' : ''}`}>
+        {status === 'unknown' ? 'Awaiting processing...' : status || 'No status yet.'}
+      </div>
     </div>
   );
 }

@@ -34,7 +34,9 @@ export default function LandingPage() {
     <div className="landing-page">
       <h1 className="landing-title">Welcome to Nodes of Space</h1>
       <p className="landing-subtitle">This interactive node graph functions as both a visual database interface and an analytical tool. It enables users to manage entries while dynamically revealing relationships through shared categories and tags. <br/><br/>Designed for clarity and scalability, it transforms complex data structures into intuitive, navigable networks—ideal for building knowledge systems, mapping ideas, and analyzing interconnected information.</p>
-      <h3 className="step-by-step">Follow the step-by-step instructions to get started</h3>
+      <div className="step-intro-container">
+        <h3 className="step-by-step">Follow the step-by-step instructions to get started</h3>
+      </div>
       <div className="button-container">
           <Link href="/graph" className="get-started-button">
             <FaNetworkWired/>Get Started

@@ -262,17 +262,6 @@ a {
   border: 1px solid #ddd;
 }
 
-.upload-button {
-  margin-top: 16px;
-  padding: 12px 24px;
-  background-color: #3498db;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
-
 .upload-button:hover {
   background-color: #2980b9;
 }
@@ -288,6 +277,13 @@ a {
   justify-content: center;
   gap: 16px;
   margin-top: 16px;
+}
+
+.submit-actions {
+  display: flex; /* Enable Flexbox */
+  justify-content: center; /* Center the buttons horizontally */
+  gap: 1rem; /* Add spacing between the buttons */
+  margin-top: 1.5rem; /* Add spacing above the buttons */
 }
 
 .submit-button,
@@ -375,15 +371,29 @@ button[type="submit"]:hover {
 }
 
 .upload-status {
-  margin-top: 1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  text-align: center;
-  color: #fff;
+  position: fixed; /* Fix the panel to the viewport */
+  top: 120px; /* Distance from the top of the screen */
+  right: 20px; /* Distance from the right of the screen */
+  width: 300px; /* Set a fixed width for the panel */
+  padding: 1rem; /* Add padding inside the panel */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  font-size: 1rem; /* Adjust font size for readability */
+  text-align: center; /* Center-align the text */
+  color: #fff; /* White text for contrast */
   background-color: #007bff; /* Default blue for success */
-  transition: background-color 0.3s ease, color 0.3s ease;
-  white-space: pre-wrap;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  z-index: 1000; /* Ensure it appears above other elements */
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition for appearance */
+  opacity: 0; /* Initially hidden */
+  transform: translateX(100%); /* Slide out of view initially */
+  white-space: pre-wrap; /* Preserve line breaks and wrap text */
+  max-height: 500px; /* Limit the height of the panel */
+  overflow-y: auto;
+}
+
+.upload-status.visible {
+  opacity: 1; /* Make it visible */
+  transform: translateX(0); /* Slide into view */
 }
 
 .upload-status.success {
@@ -391,11 +401,11 @@ button[type="submit"]:hover {
 }
 
 .upload-status.unknown {
-  background-color: #9d9d9d; /* grey for unknown */
+  background-color: #9d9d9d; /* Grey for unknown */
 }
 
 .upload-status.uploading {
-  background-color: #9d9d9d; /* grey for unknown */
+  background-color: #ffc107; /* Yellow for uploading */
 }
 
 .upload-status.error {
@@ -663,19 +673,24 @@ button[type="submit"]:hover {
   height: auto;
 }
 
+.step-intro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 2rem; /* Add spacing between elements */
+}
+
 .step-by-step {
-  position: fixed; /* Fix the element to the viewport */
-  bottom: 20px; /* Position it 20px from the bottom of the screen */
-  left: 50%; /* Center it horizontally */
-  transform: translateX(-50%); /* Adjust for centering */
   background-color: #007bff; /* Blue background for visibility */
+  max-width: 600px;
   color: #fff; /* White text for contrast */
   padding: 1rem 2rem; /* Add padding for spacing */
   border-radius: 8px; /* Rounded corners for a modern look */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
   font-size: 1.25rem; /* Adjust font size for readability */
   font-weight: bold; /* Make the text bold */
-  z-index: 1000; /* Ensure it appears above other elements */
   text-align: center; /* Center-align the text */
 }
 
@@ -708,4 +723,60 @@ button[type="submit"]:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
   background-color: #36a33d; /* Darker blue on hover */
   color: #000000;
+}
+
+.upload-actions {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  gap: 1rem; /* Add spacing between elements */
+  margin-top: 1.5rem; /* Add spacing above the actions */
+  align-items: flex-start; /* Align inputs and buttons to the left */
+}
+
+.process-action {
+  display: flex; /* Enable Flexbox */
+  justify-content: center; /* Center the button horizontally */
+  align-items: center; /* Center the button vertically (if the div has a height) */
+  margin-top: 1.5rem; /* Add spacing above the div */
+  height: auto; /* Ensure the height adjusts to the content */
+}
+
+.upload-actions .button {
+  padding: 0.5rem 1rem; /* Add padding for buttons */
+  background-color: #007bff; /* Blue background */
+  color: #fff; /* White text */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Add hover effects */
+}
+
+.location-label,
+.quantity-label {
+  font-size: 1rem; /* Adjust label font size */
+  font-weight: bold; /* Make labels bold */
+  margin-bottom: 0.5rem; /* Add spacing below labels */
+}
+
+.location-input,
+.quantity-input {
+  width: 100%; /* Make inputs responsive */
+  max-width: 300px; /* Limit the width of the inputs */
+  padding: 0.5rem; /* Add padding inside the inputs */
+  font-size: 1rem; /* Adjust font size for readability */
+  border: 1px solid #ccc; /* Add a subtle border */
+  border-radius: 4px; /* Rounded corners for a modern look */
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.upload-button {
+  /* place in centre of flex */
+  justify-content: center;
+  margin-top: 16px;
+  padding: 12px 24px;
+  background-color: #3498db;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
 }
