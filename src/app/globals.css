@@ -811,3 +811,184 @@ button[type="submit"]:hover {
   border-color: #007bff;
   box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
 }
+
+/* Global styles for the signin component */
+
+/* Form container */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 16rem;
+  flex: 1;
+  margin: 0 auto;
+  max-width: 400px;
+  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Form title */
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* Form subtitle */
+.form-subtitle {
+  font-size: 0.875rem;
+  color: #555;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Form link */
+.form-link {
+  color: #0070f3;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Form fields container */
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Input fields */
+.form-fields > input {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* Password container */
+.form-password-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Forgot password link */
+.form-forgot-password {
+  font-size: 0.75rem;
+  color: #0070f3;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Submit button */
+button[type="submit"] {
+  padding: 0.75rem;
+  background-color: #0070f3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #005bb5;
+}
+
+/* Form message */
+.form-message {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #d32f2f;
+  text-align: center;
+}
+
+/* Badge for environment variable warning */
+.auth-badge {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Buttons container */
+.auth-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Individual button styles */
+.auth-button {
+  flex: 1;
+  padding: 10px;
+  background-color: #0070f3;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: #005bb5;
+}
+
+.auth-button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+/* Welcome message for logged-in users */
+.auth-welcome {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #333333;
+}
+
+.auth-box {
+  position: fixed; /* Makes it float */
+  top: 20%; /* Adjust vertical position */
+  right: 20px; /* Adjust horizontal position */
+  width: 300px; /* Fixed width */
+  padding: 20px; /* Inner spacing */
+  background-color: #ffffff; /* White background */
+  border: 1px solid #ddd; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  z-index: 1000; /* Ensure it appears above other elements */
+  text-align: center; /* Center text and buttons */
+}
+
+/* Text inside the auth box */
+.auth-text {
+  margin-bottom: 15px; /* Space below the text */
+  font-size: 1rem; /* Standard font size */
+  color: #333; /* Dark gray text */
+}
+
+/* Links inside the auth text */
+.auth-text a {
+  color: #0070f3; /* Blue color for links */
+  text-decoration: underline; /* Underline for links */
+  font-weight: 500; /* Slightly bold */
+}
+
+.auth-text a:hover {
+  color: #005bb5; /* Darker blue on hover */
+}

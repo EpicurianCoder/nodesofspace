@@ -11,7 +11,7 @@ import FileUpload from '@/components/FileUpload';
 import UploadStatus from '@/components/UploadStatus';
 import ProcessAction from '@/components/ProcessAction';
 
-export default function UploadForm() {
+export default function UploadForm({ userId }) {
   const VISION_API = process.env.NEXT_PUBLIC_VISION_API;
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -128,7 +128,7 @@ export default function UploadForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ labels, location, quantity, imagePath }),
+        body: JSON.stringify({ labels, location, quantity, imagePath, userId }),
       });
 
       const data = await response.json();

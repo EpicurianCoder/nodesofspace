@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import supabase from '@/lib/supabaseClient';
+import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 
@@ -15,6 +15,7 @@ export default function EditForm({ id }) {
     categories: ''
   });
   const router = useRouter();
+  const supabase = createClient();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +33,8 @@ export default function EditForm({ id }) {
           description: data.description || '',
           quantity: data.quantity || '',
           location: data.location || '',
-          categories: data.categories || ''
+          categories: data.categories || '',
+          user_id: data.user_id || '',
         });
       }
     };

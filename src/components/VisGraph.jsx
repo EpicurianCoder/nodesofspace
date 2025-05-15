@@ -8,9 +8,9 @@ import { FiPlus } from 'react-icons/fi';
 import { DiGoogleCloudPlatform } from "react-icons/di";
 import Swal from 'sweetalert2';
 import { renderToStaticMarkup } from 'react-dom/server';
-import supabase from '@/lib/supabaseClient';
+import supabase from "@/lib/supabaseClient";
 
-const VisGraph = () => {
+const VisGraph = ({ userId, items }) => {
   const containerRef = useRef(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,13 +23,8 @@ const VisGraph = () => {
     const fetchAndRenderGraph = async () => {
       setLoading(true);
 
-      const { data: items, error } = await supabase
-        .from('Items')
-        .select('id, name, description, location, categories, svg_url');
-
-      if (error) {
-        console.error('Error fetching nodes:', error);
-        return;
+      if (!items) {
+        console.log("No items passed to /graph");
       }
 
       const convertIconToBase64 = (IconComponent) => {
@@ -216,6 +211,9 @@ const VisGraph = () => {
 
   return (
     <div>
+      <div>
+        <p>UserID: {userId}</p>
+      </div>
       {loading && (
         <div className="loading-overlay">
         <div className="spinner"></div>
