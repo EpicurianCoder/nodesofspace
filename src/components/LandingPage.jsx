@@ -37,11 +37,6 @@ export default function LandingPage() {
       <div className="step-intro-container">
         <h3 className="step-by-step">Follow the step-by-step instructions to get started</h3>
       </div>
-      <div className="button-container">
-          <Link href="/graph" className="get-started-button">
-            <FaNetworkWired/>Get Started
-          </Link>
-      </div>
       <div className="steps-container">
         {steps.map((step, index) => (
           <div

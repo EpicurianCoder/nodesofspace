@@ -31,7 +31,7 @@ export default async function Home() {
     <>
       <NavbarLite />
       <main className="container-graph">
-        <VisGraph userId = {user?.id} items={items || [] }/>
+        <VisGraph userId = {user?.id} email={user?.email} items={items || [] }/>
       </main>
     </>
   );

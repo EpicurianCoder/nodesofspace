@@ -910,7 +910,7 @@ button[type="submit"]:hover {
   text-align: center;
 }
 
-/* Badge for environment variable warning */
+/* badge for environment variable warning */
 .auth-badge {
   margin-bottom: 20px;
   padding: 10px;
@@ -963,13 +963,25 @@ button[type="submit"]:hover {
 
 .auth-box {
   position: fixed; /* Makes it float */
-  top: 20%; /* Adjust vertical position */
-  right: 20px; /* Adjust horizontal position */
+  bottom: 50px;
   width: 300px; /* Fixed width */
   padding: 20px; /* Inner spacing */
   background-color: #ffffff; /* White background */
   border: 1px solid #ddd; /* Light border */
   border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  z-index: 1000; /* Ensure it appears above other elements */
+  text-align: center; /* Center text and buttons */
+}
+
+.logged-in {
+  position: fixed; /* Makes it float */
+  bottom: 10px;
+  right: 10px;
+  padding: 20px; /* Inner spacing */
+  color: #ffffff;
+  background-color: #26943d; /* White background */
+  border-radius: 30px; /* Rounded corners */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   z-index: 1000; /* Ensure it appears above other elements */
   text-align: center; /* Center text and buttons */
@@ -991,4 +1003,48 @@ button[type="submit"]:hover {
 
 .auth-text a:hover {
   color: #005bb5; /* Darker blue on hover */
+}
+
+/* Container for the SMTP message box */
+.stmp-message-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 15px;
+  background-color: #f8f9fa; /* Light gray background */
+  border: 1px solid #ddd; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-size: 0.9rem; /* Slightly smaller font size */
+  color: #333; /* Dark gray text */
+  margin-bottom: 20px; /* Space below the box */
+}
+
+/* Container for the rate message */
+.rate-message-box {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Text for the rate message */
+.rate-message {
+  font-size: 0.85rem; /* Slightly smaller font size */
+  color: #555; /* Medium gray text */
+  line-height: 1.4; /* Improve readability */
+}
+
+/* Link inside the message box */
+.smtp-link-text {
+  color: #0070f3; /* Blue color for the link */
+  text-decoration: none; /* Remove underline */
+  font-weight: 500; /* Slightly bold */
+  display: inline-flex;
+  align-items: center;
+  gap: 5px; /* Space between text and icon */
+}
+
+.smtp-link-text:hover {
+  color: #005bb5; /* Darker blue on hover */
+  text-decoration: underline; /* Add underline on hover */
 }

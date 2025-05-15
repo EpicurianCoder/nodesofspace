@@ -1,10 +1,5 @@
-import Image from "next/image";
-import styles from "./page.module.css";
 import LandingPage from "@/components/LandingPage";
 import NavbarLite from "@/components/NavbarLite";
-import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
-import SignUpUserSteps from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import AuthButton from "@/components/header-auth";
 
 export default function Home() {
@@ -13,9 +8,7 @@ export default function Home() {
       <NavbarLite />
       <main className="landing-container">
         <div className="auth-box">
-          <p className="auth-text">
-            Welcome! Please Sign in or Sign up to proceed to the graph.
-          </p>
+          <h2>LOGIN</h2><br />
           <AuthButton />
         </div>
         <LandingPage />

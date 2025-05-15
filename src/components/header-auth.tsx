@@ -38,13 +38,18 @@ export default async function AuthButton() {
       </form>
     </div>
   ) : (
-    <div className="auth-buttons">
-      <button className="auth-button">
-        <Link href="/sign-in">Sign in</Link>
-      </button>
-      <button className="auth-button">
-        <Link href="/sign-up">Sign up</Link>
-      </button>
+    <div>
+      <p className="auth-text">
+        Welcome! Please Sign in or Sign up to proceed to the graph.
+      </p>
+      <div className="auth-buttons">
+        <button className="auth-button">
+          <Link href="/sign-in">Sign in</Link>
+        </button>
+        <button className="auth-button">
+          <Link href="/sign-up">Sign up</Link>
+        </button>
+      </div>
     </div>
   );
 }

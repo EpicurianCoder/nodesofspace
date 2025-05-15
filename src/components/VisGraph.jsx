@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import { renderToStaticMarkup } from 'react-dom/server';
 import supabase from "@/lib/supabaseClient";
 
-const VisGraph = ({ userId, items }) => {
+const VisGraph = ({ userId, items, email }) => {
   const containerRef = useRef(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -211,8 +211,8 @@ const VisGraph = ({ userId, items }) => {
 
   return (
     <div>
-      <div>
-        <p>UserID: {userId}</p>
+      <div className="logged-in">
+        <p>Logged in as: {email}</p>
       </div>
       {loading && (
         <div className="loading-overlay">
