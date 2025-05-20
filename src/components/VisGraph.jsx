@@ -9,6 +9,7 @@ import { DiGoogleCloudPlatform } from "react-icons/di";
 import Swal from 'sweetalert2';
 import { renderToStaticMarkup } from 'react-dom/server';
 import supabase from "@/lib/supabaseClient";
+import tags from "@/lib/tags.json";
 
 const VisGraph = ({ userId, items, email }) => {
   const containerRef = useRef(null);
@@ -38,36 +39,57 @@ const VisGraph = ({ userId, items, email }) => {
       const nodesArray = items.map((item) => ({
         id: item.id,
         label: item.name || `Item ${item.id}`,
-        description: item.description || '',
-        location: item.location || '',
-        categories: item.categories || '',
-        svg_url: item.svg_url || '',
-        image: base64IconPlus
+        description: item.description || 'No Description',
+        bulk_data: item.bulk_data || null,
+        svg_url: item.svg_url || 'No Image'
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
+      console.log("nodesArray: ", nodesArray);
 
+      const referenceJson = tags; // assuming tags.FunctionalUse is an object with keys
       const edgesArray = [];
       for (let i = 0; i < nodesArray.length; i++) {
-        const sourceId = nodesArray[i].id;
-        const otherIds = nodesArray
-          .map((n) => n.id)
-          .filter((id) => id !== sourceId);
+        const node_a = nodesArray[i];
+        for (let j = i + 1; j < nodesArray.length; j++) {
+          const node_b = nodesArray[j];
 
-        const numEdges = Math.floor(Math.random() * 3) + 1;
-        const targets = otherIds
-          .sort(() => 0.5 - Math.random())
-          .slice(0, numEdges);
+          Object.keys(referenceJson.FunctionalUse).forEach((key) => {
+            const aVal = node_a.bulk_data?.FunctionalUse[key];
+            const bVal = node_b.bulk_data?.FunctionalUse[key];
+            // console.log("Comparing ", aVal, " and ", bVal);
 
-        targets.forEach((targetId) => {
-          edgesArray.push({ from: sourceId, to: targetId });
-        });
+            // Only if both nodes share a non-null, matching value
+            if (aVal != null && bVal != null && aVal === bVal) {
+              edgesArray.push({ from: node_a.id, to: node_b.id });
+
+              // Optionally assign group — only once, and don't overwrite it blindly
+              if (!node_a.group) node_a.group = aVal;
+              if (!node_b.group) node_b.group = bVal;
+            }
+          });
+        }
       }
+
+      // Dynamically create groupStyles for each FunctionalUse key
+      const groupStyles = {};
+      Object.keys(referenceJson.FunctionalUse).forEach((key, idx) => {
+        // Generate a color for each group (simple hash for demo)
+        const colors = [
+          '#FFD700', '#87CEEB', '#90EE90', '#FFB6C1', '#FFA07A', '#B0C4DE', '#DDA0DD', '#98FB98', '#F08080', '#E6E6FA',
+          '#B8860B', '#4682B4', '#228B22', '#8B008B', '#FF6347', '#20B2AA', '#FF69B4', '#CD5C5C', '#7B68EE', '#00CED1'
+        ];
+        groupStyles[key] = {
+          color: { background: colors[idx % colors.length], border: '#333' },
+          shape: 'dot'
+        };
+      });
 
       const nodes = new DataSet(nodesArray);
       const edges = new DataSet(edgesArray);
 
       const data = { nodes, edges };
       const options = {
+        groups: groupStyles,
         interaction: {
           multiselect: true,
           dragNodes: true,
@@ -82,16 +104,17 @@ const VisGraph = ({ userId, items, email }) => {
             face: 'Arial'
             }
           },
-        edges: { arrows: { to: true }, smooth: true },
+        edges: { arrows: { to: false }, smooth: true },
         physics: {
           enabled: true,
-          solver: 'barnesHut',
-          barnesHut: {
-            gravitationalConstant: -20000, // Strength of repulsion between nodes
-            centralGravity: 0.3, // How much nodes are attracted to the center
-            springLength: 200, // Ideal length for edges
-            springConstant: 0.02, // How strongly edges pull nodes
-            damping: 0.09, // Damping factor for velocity
+          solver: 'forceAtlas2Based', // repulsion, barnesHut, hierarchicalRepulsion
+          forceAtlas2Based: {
+            gravitationalConstant: -1200, // Strength of repulsion between nodes
+            avoidOverlap: 0,
+            centralGravity: 0.15, // How much nodes are attracted to the center
+            springLength: 250, // Ideal length for edges
+            springConstant: 0.3, // How strongly edges pull nodes
+            damping: 0.4, // Damping factor for velocity
           },
           minVelocity: 0.75, // Minimum velocity for node movement
         },
@@ -99,6 +122,21 @@ const VisGraph = ({ userId, items, email }) => {
 
       const network = new Network(containerRef.current, data, options);
       networkRef.current = network;
+      // To cluster all nodes with the same group:
+      Object.keys(groupStyles).forEach(groupName => {
+        network.cluster({
+          joinCondition: function(nodeOptions) {
+            return nodeOptions.group === groupName;
+          },
+          clusterNodeProperties: {
+            id: 'cluster:' + groupName,
+            label: groupName + ' Cluster',
+            borderWidth: 3,
+            color: groupStyles[groupName].color,
+            shape: groupStyles[groupName].shape,
+          }
+        });
+      });
 
       network.on('click', (event) => {
         const { nodes: clickedNodes } = event;

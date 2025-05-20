@@ -10,6 +10,7 @@ import UploadActions from '@/components/UploadActions';
 import FileUpload from '@/components/FileUpload';
 import UploadStatus from '@/components/UploadStatus';
 import ProcessAction from '@/components/ProcessAction';
+import BuildArticle from '@/components/BuildArticle';
 
 export default function UploadForm({ userId }) {
   const VISION_API = process.env.NEXT_PUBLIC_VISION_API;
@@ -17,10 +18,12 @@ export default function UploadForm({ userId }) {
   const [previewUrl, setPreviewUrl] = useState('');
   const [status, setStatus] = useState('unknown');
   const [labels, setLabels] = useState(null);
+  const [results, setResults] = useState(null);
   const [base64Image, setBase64Image] = useState(null);
-  const [location, setLocation] = useState('');
-  const [quantity, setQuantity] = useState(1);
+  // const [location, setLocation] = useState('');
+  // const [quantity, setQuantity] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [jsonObject, setJsonObject] = useState(null);
   const router = useRouter();
 
   async function uploadFile(file, imagePath) {
@@ -86,7 +89,10 @@ export default function UploadForm({ userId }) {
             fullDescription += `${entity.description} (${(entity.score * 100).toFixed(2)}%) \n`;
         }
         setLabels(data.responses[0].labelAnnotations);
-        setStatus(`Image Processing complete! \n\n ${fullDescription}`);
+        const bulkResult = await BuildArticle(fullDescription);
+        setStatus(`Image Processing complete! \n\n ${bulkResult}`);
+        setResults(bulkResult);
+        console.log("Results: ", bulkResult);
       } catch (err) {
         setStatus('Error uploading image');
         console.error(err);
@@ -123,12 +129,29 @@ export default function UploadForm({ userId }) {
       const randomNumber = Math.floor(Math.random() * 1000000);
       const imagePath = `${labels[0].description}_${randomNumber}.jpg`;
       uploadFile(selectedFile, imagePath);
+
+      // try and parse the results object from gemini
+      const cleaned = results
+        .replace(/^```json\s*/i, "")   // Remove ```json from the start
+        .replace(/```$/, "")           // Remove trailing ``` from the end
+        .trim();
+      console.log("Clean JSON: ", cleaned);
+
+      const json = JSON.parse(cleaned);
+      const name = json.Name;
+      const description = json.Description;
+      const rest = JSON.stringify(json);
+
+      console.log("JSON: ", json);
+      console.log("JSON string: ", rest);
+      setJsonObject(json);
+
       const response = await fetch('/api/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ labels, location, quantity, imagePath, userId }),
+        body: JSON.stringify({ name, description, imagePath, userId, rest }),
       });
 
       const data = await response.json();
@@ -167,14 +190,8 @@ export default function UploadForm({ userId }) {
         isProcessing={isProcessing}
       />
       {!labels && <ProcessAction handleUpload={handleUpload} />}
-      {labels && (
+      {results && (
         <>
-          <UploadActions
-            location={location}
-            setLocation={setLocation}
-            quantity={quantity}
-            setQuantity={setQuantity}
-          />
           <SubmitActions handleSubmit={handleSubmit} handleCancel={handleCancel} />
         </>
       )}

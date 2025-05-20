@@ -14,11 +14,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: `Method ${req.method} not allowed` });
   }
 
-  const { labels, location, quantity, imagePath, userId } = req.body;
+  const { name, description, imagePath, userId, rest } = req.body;
   console.log("User ID: ", JSON.stringify(userId));
 
-  const name_temp = labels[0].description;
-  const description = labels.map(label => label.description).join(', ');
+  const bulkData = JSON.parse(rest);
+  // console.log(bulkData);
+
+  // const name = json.Name;
+  // const description = json.Description;
 
   const supabase = createClient();
 
@@ -27,12 +30,11 @@ export default async function handler(req, res) {
     .insert([
       {
         user_id: userId,
-        name: name_temp,
-        description: 'description goes here TEST...',
+        name: name,
+        description: description,
         svg_url: imagePath,
-        quantity: quantity,
-        location: location,
-        categories: description
+        categories: description,
+        bulk_data: bulkData
       }
     ]).select();;
 
@@ -62,8 +64,7 @@ export default async function handler(req, res) {
     status: 'success',
     message:
       'Node Added Successfully\n' +
-      'Labels Identified: ' + description +
-      '\nLocation of item: ' + location,
+      'Description: ' + description,
     insertedData: data,
   });
 }

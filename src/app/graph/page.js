@@ -24,7 +24,7 @@ export default async function Home() {
     .select("*")
     .eq("user_id", user?.id)
   if (items) {
-    console.log("Items: ", items);
+    console.log("Items Successfully retrieved for node graphing");
   }
 
   return (
