@@ -76,12 +76,13 @@ const VisGraph = ({ userId, items, email }) => {
 
           // Check if both nodes have any of the keys
           for (const key of functionalKeys) {
-            const aHasValue = node_a.bulk_data?.FunctionalUse?.[key] != null;
-            const bHasValue = node_b.bulk_data?.FunctionalUse?.[key] != null;
+            const aHasValue = node_a.bulk_data?.FunctionalUse?.[key];
+            const bHasValue = node_b.bulk_data?.FunctionalUse?.[key];
 
-            if (aHasValue && bHasValue) {
+            if (aHasValue && bHasValue && aHasValue === bHasValue) {
               edgesArray.push({ from: node_a.id, to: node_b.id });
               console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
+              console.log(`Because ${aHasValue} = ${bHasValue}`);
               break; // Exit the loop early — one match is enough
             }
           }
@@ -102,7 +103,8 @@ const VisGraph = ({ userId, items, email }) => {
         };
       });
       groupStylesRef.current = groupStyles;
-
+      
+      console.log("EdgeArray: ", edgesArray);
       const nodes = new DataSet(nodesArray);
       const edges = new DataSet(edgesArray);
 
