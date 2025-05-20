@@ -17,8 +17,11 @@ const VisGraph = ({ userId, items, email }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const [nodesArray, setNodesArray] = useState([]);
+  const [clusterIds, setClusterIds] = useState([]);
   const [dropdownValue, setDropdownValue] = useState('');
   const networkRef = useRef(null);
+  const [clustersOpen, setClustersOpen] = useState(true);
+  const groupStylesRef = useRef({});
 
   useEffect(() => {
     const fetchAndRenderGraph = async () => {
@@ -47,26 +50,41 @@ const VisGraph = ({ userId, items, email }) => {
       console.log("nodesArray: ", nodesArray);
 
       const referenceJson = tags; // assuming tags.FunctionalUse is an object with keys
+
+      // Assign group by FunctionalUse key name
+      nodesArray.forEach(node => {
+        if (node.bulk_data && node.bulk_data.FunctionalUse) {
+          for (const key of Object.keys(referenceJson.FunctionalUse)) {
+            const val = node.bulk_data.FunctionalUse[key];
+            if (val != null) {
+              node.group = key; // assign the key name as the group
+              break; // stop at the first match
+            }
+          }
+        }
+      });
+
       const edgesArray = [];
-      for (let i = 0; i < nodesArray.length; i++) {
+     for (let i = 0; i < nodesArray.length; i++) {
         const node_a = nodesArray[i];
+
         for (let j = i + 1; j < nodesArray.length; j++) {
           const node_b = nodesArray[j];
 
-          Object.keys(referenceJson.FunctionalUse).forEach((key) => {
-            const aVal = node_a.bulk_data?.FunctionalUse[key];
-            const bVal = node_b.bulk_data?.FunctionalUse[key];
-            // console.log("Comparing ", aVal, " and ", bVal);
+          // Get the list of keys to check
+          const functionalKeys = Object.keys(referenceJson.FunctionalUse);
 
-            // Only if both nodes share a non-null, matching value
-            if (aVal != null && bVal != null && aVal === bVal) {
+          // Check if both nodes have any of the keys
+          for (const key of functionalKeys) {
+            const aHasValue = node_a.bulk_data?.FunctionalUse?.[key] != null;
+            const bHasValue = node_b.bulk_data?.FunctionalUse?.[key] != null;
+
+            if (aHasValue && bHasValue) {
               edgesArray.push({ from: node_a.id, to: node_b.id });
-
-              // Optionally assign group — only once, and don't overwrite it blindly
-              if (!node_a.group) node_a.group = aVal;
-              if (!node_b.group) node_b.group = bVal;
+              console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
+              break; // Exit the loop early — one match is enough
             }
-          });
+          }
         }
       }
 
@@ -83,6 +101,7 @@ const VisGraph = ({ userId, items, email }) => {
           shape: 'dot'
         };
       });
+      groupStylesRef.current = groupStyles;
 
       const nodes = new DataSet(nodesArray);
       const edges = new DataSet(edgesArray);
@@ -122,21 +141,6 @@ const VisGraph = ({ userId, items, email }) => {
 
       const network = new Network(containerRef.current, data, options);
       networkRef.current = network;
-      // To cluster all nodes with the same group:
-      Object.keys(groupStyles).forEach(groupName => {
-        network.cluster({
-          joinCondition: function(nodeOptions) {
-            return nodeOptions.group === groupName;
-          },
-          clusterNodeProperties: {
-            id: 'cluster:' + groupName,
-            label: groupName + ' Cluster',
-            borderWidth: 3,
-            color: groupStyles[groupName].color,
-            shape: groupStyles[groupName].shape,
-          }
-        });
-      });
 
       network.on('click', (event) => {
         const { nodes: clickedNodes } = event;
@@ -171,6 +175,41 @@ const VisGraph = ({ userId, items, email }) => {
 
     fetchAndRenderGraph();
   }, []);
+
+  const toggleClusters = () => {
+    if (!networkRef.current) return;
+    if (clustersOpen) {
+      // Cluster all
+      Object.keys(groupStylesRef.current).forEach(groupName => {
+        networkRef.current.cluster({
+          joinCondition: function(nodeOptions) {
+            return nodeOptions.group === groupName;
+          },
+          clusterNodeProperties: {
+            id: `Cluster ${groupName}`,
+            label: groupName + ' Cluster',
+            borderWidth: 3,
+            color: groupStylesRef.current[groupName].color,
+            shape: groupStylesRef.current[groupName].shape,
+          }
+        });
+        // Update state with the new clusterId (only if it's not already in the list)
+        setClusterIds((prev) =>
+          prev.includes(`Cluster ${groupName}`) ? prev : [...prev, `Cluster ${groupName}`]
+        );
+      });
+    } else {
+      // Open all clusters
+      clusterIds.forEach((id) => {
+        try {
+          networkRef.current.openCluster(id);
+        } catch (err) {
+          console.warn(`Could not open cluster ${id}:`, err.message);
+        }
+      });
+    }
+    setClustersOpen(!clustersOpen);
+  };
 
   const handleEditClick = () => {
     if (selectedNode) {
@@ -217,12 +256,12 @@ const VisGraph = ({ userId, items, email }) => {
   };
 
   const handleFullDetails = async () => {
-    const { id, description, location, categories, svg_url } = selectedNode;
+    const { id, label, description, svg_url } = selectedNode;
     const nodeDescription = `
+      Name: ${label}<br><br>
+      ID: ${id}<br><br>
       Description: ${description}<br><br>
-      Location: ${location}<br><br>
       SVG URL: ${svg_url}<br><br>
-      Categories: ${categories}<br>
     `;
     const { data, error } = await supabase.storage
       .from('nothings')
@@ -263,7 +302,8 @@ const VisGraph = ({ userId, items, email }) => {
         <div className="floating-node-details">
           <h3>Node Details</h3><br/>
           <p><strong>ID:</strong> {selectedNode.id}</p><br/>
-          <p><strong>Label:</strong> {selectedNode.label}</p><br/>
+          <p><strong>Name:</strong> {selectedNode.label}</p><br/>
+          <p><strong>Group:</strong> {selectedNode.group}</p><br/>
           <button onClick={handleFullDetails}>View Full Details</button>
           <button onClick={handleEditClick}>Edit</button>
           <button onClick={handleDelete}>Delete</button>
@@ -272,6 +312,11 @@ const VisGraph = ({ userId, items, email }) => {
       <div style={{ marginTop: '20px' }}>
         <button className="floating-add-button" onClick={handleUploadClick}>
           <FiPlus className="add-icon" /> Add Node
+        </button>
+      </div>
+      <div style={{ margin: '20px 0' }}>
+        <button onClick={toggleClusters}>
+          {clustersOpen ? 'Collapse All Clusters' : 'Expand All Clusters'}
         </button>
       </div>
       <div className ="select-node">

@@ -11,7 +11,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
     <form className="form-container">
       <h1 className="form-title">Sign in</h1>
       <p className="form-subtitle">
-        Don't have an account?{" "}
+        <p>Dont have an account?</p>
         <Link className="form-link" href="/sign-up">
           Sign up
         </Link>
