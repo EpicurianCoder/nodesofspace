@@ -1,4 +1,4 @@
-import createClient from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 
 // get request that makes a call to the supabase database
 // to get the items for the user
