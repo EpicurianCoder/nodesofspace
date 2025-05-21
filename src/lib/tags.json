@@ -169,23 +169,6 @@
       "Hand-Tooled",
       "Reused Material"
     ],
-    "Age": [
-      "Recently Created",
-      "Contemporary",
-      "Historically Used",
-      "Collectible Age",
-      "Preserved Artifact",
-      "Prehistoric Era"
-    ],
-    "GeographicOrigin": [
-      "Africa-Origin",
-      "Asia-Origin",
-      "Europe-Origin",
-      "NA-Origin",
-      "SA-Origin",
-      "Oceania-Origin",
-      "Polar-Origin"
-    ],
     "CulturalStyle": [
       "Nordic",
       "Eastern",
