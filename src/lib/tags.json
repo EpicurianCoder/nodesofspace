@@ -123,32 +123,7 @@
     ]
   },
   "Composition": {
-    "PrimaryMaterials": {
-      "Organic": [
-        "Natural Fiber",
-        "Processed Plant",
-        "Animal-Derived",
-        "Cellulose-Based",
-        "Natural Pulp",
-        "Grain Material"
-      ],
-      "Inorganic": [
-        "Metallic",
-        "Synthetic Polymer",
-        "Amorphous Solid",
-        "Crystalline Solid",
-        "Kiln-Fired",
-        "Aggregate Mix"
-      ],
-      "Composite": [
-        "Embedded Circuit",
-        "Textile Blend",
-        "Porous Sponge",
-        "Layered Sheet",
-        "Cured Cast",
-        "Fiber-Reinforced"
-      ]
-    },
+    "PrimaryMaterials": ["Organic", "Inorganic", "Composite"],
     "ComponentCount": [
       "Single Unit",
       "Modular Elements",
@@ -167,7 +142,7 @@
     ]
   },
   "PhysicalAttributes": {
-    "Size": ["Minute", "Compact", "Moderate", "Bulky", "Massive", "Oversized"],
+    "Size": ["Minute", "Compact", "Moderate", "Large", "Massive", "Oversized"],
     "Shape": [
       "Planar",
       "Globular",
@@ -191,8 +166,6 @@
     "Manufacture": [
       "Crafted",
       "Factory-Made",
-      "Individually Commissioned",
-      "Additive Fabrication",
       "Hand-Tooled",
       "Reused Material"
     ],
@@ -306,25 +279,6 @@
       "Health Monitoring",
       "Exercising",
       "Choreography"
-    ],
-    "SymbolicMeaning": [
-      "Faith-Based",
-      "National Identity",
-      "Emotional Value",
-      "Ritualistic",
-      "Traditional Ceremony",
-      "Folkloric",
-      "Cultural Belief"
-    ],
-    "TaxonomicClass": [
-      "Zoological",
-      "Botanical",
-      "Mycological",
-      "Geological",
-      "Artificial",
-      "Preserved Lifeform",
-      "Microbial Agent",
-      "Chemical Substance"
     ]
   }
 }
