@@ -11,7 +11,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import supabase from "@/lib/supabaseClient";
 import tags from "@/lib/tags.json";
 
-const VisGraph = ({ userId, items, email }) => {
+const VisGraph = ({ userId, items, email, choice, group }) => {
   const containerRef = useRef(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,6 +21,7 @@ const VisGraph = ({ userId, items, email }) => {
   const [dropdownValue, setDropdownValue] = useState('');
   const networkRef = useRef(null);
   const [clustersOpen, setClustersOpen] = useState(true);
+  const [printit, setPrintit] = useState(false);
   const groupStylesRef = useRef({});
   // const [activityMatchCount, setActivityMatchCount] = useState(0);
 
@@ -90,7 +91,7 @@ const VisGraph = ({ userId, items, email }) => {
               const res = compareValues(valueA, valueB);
               matchCount += res;
               if (res > 0) {
-                console.log("Match: ", valueA, " and ", valueB);
+                // console.log("Match: ", valueA, " and ", valueB);
               }
             }
           }
@@ -112,7 +113,7 @@ const VisGraph = ({ userId, items, email }) => {
           const node_b = nodesArray[j];
 
           const matchCount = countSharedTags(node_a.bulk_data, node_b.bulk_data, tags);
-          console.log("Number of matching tags:", matchCount);
+          // console.log("Number of matching tags:", matchCount);
           if (matchCount > 5) {
             edgesArray.push({ 
               from: node_a.id, 
@@ -130,24 +131,41 @@ const VisGraph = ({ userId, items, email }) => {
             // console.log(`Because the number of matching tags is ${matchCount}`);
           }
 
-          // Create solid edge based on a 'FunctionalUse' match
-          const functionalKeys = Object.keys(referenceJson.FunctionalUse);
-          for (const key of functionalKeys) {
-            const aHasValue = node_a.bulk_data?.FunctionalUse?.[key];
-            const bHasValue = node_b.bulk_data?.FunctionalUse?.[key];
-            if (aHasValue && bHasValue && aHasValue === bHasValue) {
-              edgesArray.push({ 
-                from: node_a.id, 
-                to: node_b.id, 
-                color: "green", 
-                value: 4, 
-                label: `${aHasValue}` 
-              });
-              // console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
-              // console.log(`Because ${aHasValue} = ${bHasValue}`);
-              break; // Exit the loop early — one match is enough
+          const stringIfArray = (val) => {
+            if (Array.isArray(val)) {
+              return String(val[0]);
+            } else if (typeof val === 'string') {
+              return val;
             }
+            else {
+              return "";
+            }
+          };
+
+          // Create solid edge based on a 'FunctionalUse' match
+          if (choice === "yes") {
+          setPrintit(true);
+            const nodeAgroup = Object.keys(node_a.bulk_data.FunctionalUse)[0];
+            const nodeBgroup = Object.keys(node_b.bulk_data.FunctionalUse)[0];
+            // console.log("node_a functionalUseGroup: ", nodeAgroup);
+            // console.log("node_b functionalUseGroup: ", nodeBgroup);
+            const groupGroupValueA = stringIfArray(node_a.bulk_data.FunctionalUse[nodeAgroup]);
+            const groupGroupValueB = stringIfArray(node_b.bulk_data.FunctionalUse[nodeBgroup]);
+            // console.log("node_a functionalUseGroup Value: ", groupGroupValueA, "nodeID: ", node_a.id);
+            // console.log("node_b functionalUseGroup Value: ", groupGroupValueB, "nodeID: ", node_b.id);
+            if (groupGroupValueA === groupGroupValueB) {
+                edgesArray.push({ 
+                  from: node_a.id, 
+                  to: node_b.id, 
+                  color: "green", 
+                  value: 4, 
+                  label: `${groupGroupValueA}` 
+                });
+                console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
+                console.log(`Because ${groupGroupValueA} = ${groupGroupValueB}`);
+              }
           }
+          
           // Makes solid edge based on shared 'AssociatedActivity' in 'SemanticTags'
           // const associatedActivities = tags.SemanticTags.AssociatedActivity;
           const aHasRaw = node_a.bulk_data?.SemanticTags.AssociatedActivity;
@@ -164,7 +182,7 @@ const VisGraph = ({ userId, items, email }) => {
           for (const itemA of smallerList) {
             for (const itemB of biggerList) {
               if (normalize(itemA) === normalize(itemB)) {
-                console.log("Match");
+                // console.log("Match");
                 activityCount ++;
               }
             }
@@ -177,8 +195,8 @@ const VisGraph = ({ userId, items, email }) => {
                 value: 4, 
                 label: `${activityCount} associatedActivities` 
               });
-              console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
-              console.log(`Because sharedCount = ${activityCount}`);
+              // console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
+              // console.log(`Because sharedCount = ${activityCount}`);
           }
         }
       }

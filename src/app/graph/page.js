@@ -3,8 +3,10 @@ import NavbarLite from '@/components/NavbarLite';
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-export default async function Home() {
+export default async function Home({ searchParams }) {
   const supabase = await createClient();
+  const { choice } = await searchParams;
+  const { group } = await searchParams;
   
   // get user id to pass to the graph
   // this is a server component so we can use the supabase client directly
@@ -31,7 +33,7 @@ export default async function Home() {
     <>
       <NavbarLite />
       <main className="container-graph">
-        <VisGraph userId = {user?.id} email={user?.email} items={items || [] }/>
+        <VisGraph userId = {user?.id} email={user?.email} items={items || [] } choice={choice} group={group}/>
       </main>
     </>
   );
