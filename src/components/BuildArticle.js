@@ -22,10 +22,14 @@ const BuildArticle = async (fullDescription) => {
             Using the description labels here: ${fullDescription}, use the JSON: ${JSON.stringify(tags)} 
             as a reference. Return a JSON containing ALL the keys from the sample and the most relevant 
             SINGLE value under each key. Only one value per key if there is a relative match, 
-            otherwise null. For Description, add one highly descriptive sentence of the item, 
+            otherwise null. 'FunctionalUse' should only have one populated key, and it should be 
+            the key-value pair that makes the most sense for that item. For Description, add 
+            one highly descriptive sentence of the item, 
             and for the 'Name', come up with an accurate name that is 3 words or less, do not 
             make assumption on what the objects is, rather keep the name simple in order to be 
-            more accurate.'GeographicOrigin' should only have one value assigned.
+            more accurate.'GeographicOrigin' should only have one value assigned. Under 'SemanticTags',
+            the 'AssociatedActivity' key, may contain up to 5 of the values provides in the sameple JSON
+            and should always contain a list.
           `
         }]
       }]

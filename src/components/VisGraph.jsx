@@ -22,6 +22,7 @@ const VisGraph = ({ userId, items, email }) => {
   const networkRef = useRef(null);
   const [clustersOpen, setClustersOpen] = useState(true);
   const groupStylesRef = useRef({});
+  // const [activityMatchCount, setActivityMatchCount] = useState(0);
 
   useEffect(() => {
     const fetchAndRenderGraph = async () => {
@@ -64,6 +65,45 @@ const VisGraph = ({ userId, items, email }) => {
         }
       });
 
+      const countSharedTags = (itemA, itemB, referenceStructure) => {
+        let matchCount = 0;
+
+        const compareValues = (valA, valB) => {
+          if (Array.isArray(valA) && Array.isArray(valB)) {
+            return valA.filter(value => valB.includes(value)).length;
+          } else if (typeof valA === 'string' && typeof valB === 'string') {
+            return valA === valB ? 1 : 0;
+          }
+          return 0;
+        };
+
+        const recurseCompare = (obj, keyPath = []) => {
+          for (const key in obj) {
+            const currentPath = [...keyPath, key];
+
+            if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+              recurseCompare(obj[key], currentPath);
+            } else {
+              // Access values from both items using key path
+              const valueA = getNestedValue(itemA, currentPath);
+              const valueB = getNestedValue(itemB, currentPath);
+              const res = compareValues(valueA, valueB);
+              matchCount += res;
+              if (res > 0) {
+                console.log("Match: ", valueA, " and ", valueB);
+              }
+            }
+          }
+        };
+
+        const getNestedValue = (obj, path) => {
+          return path.reduce((acc, key) => acc?.[key], obj);
+        };
+
+        recurseCompare(referenceStructure);
+        return matchCount;
+      }
+
       const edgesArray = [];
      for (let i = 0; i < nodesArray.length; i++) {
         const node_a = nodesArray[i];
@@ -71,20 +111,74 @@ const VisGraph = ({ userId, items, email }) => {
         for (let j = i + 1; j < nodesArray.length; j++) {
           const node_b = nodesArray[j];
 
-          // Get the list of keys to check
-          const functionalKeys = Object.keys(referenceJson.FunctionalUse);
+          const matchCount = countSharedTags(node_a.bulk_data, node_b.bulk_data, tags);
+          console.log("Number of matching tags:", matchCount);
+          if (matchCount > 5) {
+            edgesArray.push({ 
+              from: node_a.id, 
+              to: node_b.id, 
+              value: matchCount/2, 
+              label: `${matchCount} shared properties`,
+              dashes: true,
+              color: "gray",
+              scaling: {
+                min: 1,
+                max: 6
+              }
+            });
+            // console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
+            // console.log(`Because the number of matching tags is ${matchCount}`);
+          }
 
-          // Check if both nodes have any of the keys
+          // Create solid edge based on a 'FunctionalUse' match
+          const functionalKeys = Object.keys(referenceJson.FunctionalUse);
           for (const key of functionalKeys) {
             const aHasValue = node_a.bulk_data?.FunctionalUse?.[key];
             const bHasValue = node_b.bulk_data?.FunctionalUse?.[key];
-
             if (aHasValue && bHasValue && aHasValue === bHasValue) {
-              edgesArray.push({ from: node_a.id, to: node_b.id });
-              console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
-              console.log(`Because ${aHasValue} = ${bHasValue}`);
+              edgesArray.push({ 
+                from: node_a.id, 
+                to: node_b.id, 
+                color: "green", 
+                value: 4, 
+                label: `${aHasValue}` 
+              });
+              // console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
+              // console.log(`Because ${aHasValue} = ${bHasValue}`);
               break; // Exit the loop early — one match is enough
             }
+          }
+          // Makes solid edge based on shared 'AssociatedActivity' in 'SemanticTags'
+          // const associatedActivities = tags.SemanticTags.AssociatedActivity;
+          const aHasRaw = node_a.bulk_data?.SemanticTags.AssociatedActivity;
+          const bHasRaw = node_b.bulk_data?.SemanticTags.AssociatedActivity;
+
+          const listA = Array.isArray(aHasRaw) ? aHasRaw : [aHasRaw].filter(Boolean);
+          const listB = Array.isArray(bHasRaw) ? bHasRaw : [bHasRaw].filter(Boolean);
+          const [biggerList, smallerList] =
+            listA.length > listB.length ? [listA, listB] : [listB, listA];
+
+          const normalize = s => String(s).trim().toLowerCase();
+          let activityCount = 0;
+
+          for (const itemA of smallerList) {
+            for (const itemB of biggerList) {
+              if (normalize(itemA) === normalize(itemB)) {
+                console.log("Match");
+                activityCount ++;
+              }
+            }
+          }
+          if (activityCount > 1) {
+            edgesArray.push({ 
+                from: node_a.id, 
+                to: node_b.id, 
+                color: "blue", 
+                value: 4, 
+                label: `${activityCount} associatedActivities` 
+              });
+              console.log(`Edge created from ${node_a.id} to ${node_b.id}`);
+              console.log(`Because sharedCount = ${activityCount}`);
           }
         }
       }
@@ -105,6 +199,7 @@ const VisGraph = ({ userId, items, email }) => {
       groupStylesRef.current = groupStyles;
       
       console.log("EdgeArray: ", edgesArray);
+
       const nodes = new DataSet(nodesArray);
       const edges = new DataSet(edgesArray);
 
@@ -128,13 +223,13 @@ const VisGraph = ({ userId, items, email }) => {
         edges: { arrows: { to: false }, smooth: true },
         physics: {
           enabled: true,
-          solver: 'forceAtlas2Based', // repulsion, barnesHut, hierarchicalRepulsion
+          solver: 'forceAtlas2Based', //forceAtlas2Based, repulsion, barnesHut, hierarchicalRepulsion
           forceAtlas2Based: {
-            gravitationalConstant: -1200, // Strength of repulsion between nodes
+            gravitationalConstant: -1000, // Strength of repulsion between nodes
             avoidOverlap: 0,
-            centralGravity: 0.15, // How much nodes are attracted to the center
-            springLength: 250, // Ideal length for edges
-            springConstant: 0.3, // How strongly edges pull nodes
+            centralGravity: 0.055, // How much nodes are attracted to the center
+            springLength: 210, // Ideal length for edges
+            springConstant: 0.025, // How strongly edges pull nodes
             damping: 0.4, // Damping factor for velocity
           },
           minVelocity: 0.75, // Minimum velocity for node movement
