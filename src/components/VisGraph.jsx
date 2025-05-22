@@ -11,7 +11,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import supabase from "@/lib/supabaseClient";
 import tags from "@/lib/tags.json";
 
-const VisGraph = ({ userId, items, email, choice, group }) => {
+const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
   const containerRef = useRef(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -143,7 +143,7 @@ const VisGraph = ({ userId, items, email, choice, group }) => {
           };
 
           // Create solid edge based on a 'FunctionalUse' match
-          if (choice === "yes") {
+          if (fUseEdges) {
           setPrintit(true);
             const nodeAgroup = Object.keys(node_a.bulk_data.FunctionalUse)[0];
             const nodeBgroup = Object.keys(node_b.bulk_data.FunctionalUse)[0];
@@ -239,19 +239,21 @@ const VisGraph = ({ userId, items, email, choice, group }) => {
             }
           },
         edges: { arrows: { to: false }, smooth: true },
-        physics: {
-          enabled: true,
-          solver: 'forceAtlas2Based', //forceAtlas2Based, repulsion, barnesHut, hierarchicalRepulsion
-          forceAtlas2Based: {
-            gravitationalConstant: -1000, // Strength of repulsion between nodes
-            avoidOverlap: 0,
-            centralGravity: 0.055, // How much nodes are attracted to the center
-            springLength: 210, // Ideal length for edges
-            springConstant: 0.025, // How strongly edges pull nodes
-            damping: 0.4, // Damping factor for velocity
-          },
-          minVelocity: 0.75, // Minimum velocity for node movement
-        },
+        physics: (() => {
+          const solver = 'forceAtlas2Based'; // or get this value from props/state if dynamic
+          return {
+            enabled: true,
+            solver: solver, // forceAtlas2Based, repulsion, barnesHut, hierarchicalRepulsion
+            [solver]: {
+              gravitationalConstant: -1000, // Strength of repulsion between nodes
+              centralGravity: 0.055, // How much nodes are attracted to the center
+              springLength: 210, // Ideal length for edges
+              springConstant: 0.025, // How strongly edges pull nodes
+              damping: 0.4, // Damping factor for velocity
+            },
+            minVelocity: 0.75, // Minimum velocity for node movement
+          };
+        })(),
       };
 
       const network = new Network(containerRef.current, data, options);
@@ -429,9 +431,54 @@ const VisGraph = ({ userId, items, email, choice, group }) => {
           <FiPlus className="add-icon" /> Add Node
         </button>
       </div>
-      <div style={{ margin: '20px 0' }}>
-        <button onClick={toggleClusters}>
+      <div style={{position: "fixed", bottom: 60, left: 20, margin: 20}}>
+        <button className="cluster-toggle" onClick={toggleClusters}>
           {clustersOpen ? 'Collapse All Clusters' : 'Expand All Clusters'}
+        </button>
+      </div>
+      {fUseEdges ? (
+        <div style={{position: "fixed", bottom: 90, left: 20, margin: 20}}>
+          <button className="edge-button">
+            <a href="/graph">
+              Render without FunctionalUse Edges
+            </a>
+          </button>
+        </div>
+      ) : (
+        <div style={{position: "fixed", bottom: 90, left: 20, margin: 20}}>
+          <button className="edge-button">
+            <a href="/graph?fUseEdges=true">
+              Render with FunctionalUse Edges
+            </a>
+          </button>
+        </div>
+      )} forceAtlas2Based, repulsion, barnesHut, hierarchicalRepulsion
+      <div>
+        <button className="solver1">
+          <a href="/graph?solver=forceAtlas2Based">
+            Solver: forceAtlas2Based
+          </a>
+        </button>
+      </div>
+      <div>
+        <button className="solver2">
+          <a href="/graph?solver=repulsion">
+            Solver: repulsion
+          </a>
+        </button>
+      </div>
+      <div>
+        <button className="solver3">
+          <a href="/graph?solver=barnesHut">
+            Solver: barnesHut
+          </a>
+        </button>
+      </div>
+      <div>
+        <button className="solver4">
+          <a href="/graph?solver=hierarchicalRepulsion">
+            Solver: hierarchicalRepulsion
+          </a>
         </button>
       </div>
       <div className ="select-node">

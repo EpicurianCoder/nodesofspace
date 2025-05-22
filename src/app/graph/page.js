@@ -5,8 +5,7 @@ import { redirect } from "next/navigation";
 
 export default async function Home({ searchParams }) {
   const supabase = await createClient();
-  const { choice } = await searchParams;
-  const { group } = await searchParams;
+  const { fUseEdges } = await searchParams;
   
   // get user id to pass to the graph
   // this is a server component so we can use the supabase client directly
@@ -33,7 +32,7 @@ export default async function Home({ searchParams }) {
     <>
       <NavbarLite />
       <main className="container-graph">
-        <VisGraph userId = {user?.id} email={user?.email} items={items || [] } choice={choice} group={group}/>
+        <VisGraph userId = {user?.id} email={user?.email} items={items || [] } fUseEdges={fUseEdges || false}/>
       </main>
     </>
   );

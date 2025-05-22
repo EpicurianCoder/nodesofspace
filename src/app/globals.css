@@ -518,8 +518,72 @@ button[type="submit"]:hover {
   z-index: 1000;
 }
 
+.logged-in {
+  position: fixed; /* Makes it float */
+  bottom: 20px;
+  right: 20px;
+  padding: 0.75rem 1rem;
+  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Ensure it appears above other elements */
+  text-align: center; /* Center text and buttons */
+}
+
+.cluster-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  background-color: #4c912a;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 1000;
+}
+
+.edge-button {
+  position: fixed;
+  top: 160px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  background-color: #4c912a;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 1000;
+}
+
 .floating-add-button:hover {
   background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.edge-button:hover {
+  background-color: #3c7320;
+  transform: scale(1.05);
+}
+
+.cluster-toggle:hover {
+  background-color: #3c7320;
   transform: scale(1.05);
 }
 
@@ -785,14 +849,14 @@ button[type="submit"]:hover {
 
 .select-node {
   position: fixed;
-  top: 200px;
+  top: 230px;
   left: 20px;
   width: 250px;
   padding: 1rem;
   background-color: #ffffff;
-  border: 1px solid #ccc;
+  border: 1.5px solid #c8c8c8;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   z-index: 1000;
 }
 
@@ -974,19 +1038,6 @@ button[type="submit"]:hover {
   text-align: center; /* Center text and buttons */
 }
 
-.logged-in {
-  position: fixed; /* Makes it float */
-  bottom: 10px;
-  right: 10px;
-  padding: 20px; /* Inner spacing */
-  color: #ffffff;
-  background-color: #26943d; /* White background */
-  border-radius: 30px; /* Rounded corners */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  z-index: 1000; /* Ensure it appears above other elements */
-  text-align: center; /* Center text and buttons */
-}
-
 /* Text inside the auth box */
 .auth-text {
   margin-bottom: 15px; /* Space below the text */
@@ -1047,4 +1098,80 @@ button[type="submit"]:hover {
 .smtp-link-text:hover {
   color: #005bb5; /* Darker blue on hover */
   text-decoration: underline; /* Add underline on hover */
+}
+
+.solver1 {
+  position: fixed;
+  bottom: 90px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  background-color: #60155a;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 1000;
+}
+
+.solver2 {
+  position: fixed;
+  bottom: 150px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  background-color: #60155a;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 1000;
+}
+
+.solver3 {
+  position: fixed;
+  bottom: 210px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  background-color: #60155a;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 1000;
+}
+
+.solver4 {
+  position: fixed;
+  bottom: 270px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  background-color: #60155a;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 1000;
 }
