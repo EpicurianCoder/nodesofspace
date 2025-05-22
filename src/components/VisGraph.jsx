@@ -19,10 +19,14 @@ const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
   const [nodesArray, setNodesArray] = useState([]);
   const [clusterIds, setClusterIds] = useState([]);
   const [dropdownValue, setDropdownValue] = useState('');
+  const [nodeArrayGlobal, setNodeArrayGlobal] = useState([]);
+  const [edgeArrayGlobal, setEdgeArrayGlobal] = useState([]);
   const networkRef = useRef(null);
   const [clustersOpen, setClustersOpen] = useState(true);
   const [printit, setPrintit] = useState(false);
   const groupStylesRef = useRef({});
+  const optionsRef = useRef({});
+  const [FUIDs, setFUIDs] = useState([]);
   // const [activityMatchCount, setActivityMatchCount] = useState(0);
 
   useEffect(() => {
@@ -144,7 +148,6 @@ const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
 
           // Create solid edge based on a 'FunctionalUse' match
           if (fUseEdges) {
-          setPrintit(true);
             const nodeAgroup = Object.keys(node_a.bulk_data.FunctionalUse)[0];
             const nodeBgroup = Object.keys(node_b.bulk_data.FunctionalUse)[0];
             // console.log("node_a functionalUseGroup: ", nodeAgroup);
@@ -158,6 +161,7 @@ const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
                   from: node_a.id, 
                   to: node_b.id, 
                   color: "green", 
+                  group: 'fu-edges',
                   value: 4, 
                   label: `${groupGroupValueA}` 
                 });
@@ -218,6 +222,8 @@ const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
       
       console.log("EdgeArray: ", edgesArray);
 
+      setNodeArrayGlobal(nodesArray);
+      setEdgeArrayGlobal(edgesArray);
       const nodes = new DataSet(nodesArray);
       const edges = new DataSet(edgesArray);
 
@@ -239,12 +245,10 @@ const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
             }
           },
         edges: { arrows: { to: false }, smooth: true },
-        physics: (() => {
-          const solver = 'forceAtlas2Based'; // or get this value from props/state if dynamic
-          return {
+        physics: {
             enabled: true,
-            solver: solver, // forceAtlas2Based, repulsion, barnesHut, hierarchicalRepulsion
-            [solver]: {
+            solver: "forceAtlas2Based", // forceAtlas2Based, repulsion, barnesHut, hierarchicalRepulsion
+            forceAtlas2Based: {
               gravitationalConstant: -1000, // Strength of repulsion between nodes
               centralGravity: 0.055, // How much nodes are attracted to the center
               springLength: 210, // Ideal length for edges
@@ -252,9 +256,9 @@ const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
               damping: 0.4, // Damping factor for velocity
             },
             minVelocity: 0.75, // Minimum velocity for node movement
-          };
-        })(),
+          }
       };
+      optionsRef.current = options;
 
       const network = new Network(containerRef.current, data, options);
       networkRef.current = network;
@@ -292,6 +296,31 @@ const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
 
     fetchAndRenderGraph();
   }, []);
+
+  const changeSolver = () => {
+    const nodes = new DataSet(nodeArrayGlobal);
+    const edges = new DataSet(edgeArrayGlobal);
+    const data = { nodes, edges };
+    const options = optionsRef.current;
+    console.log("Before any change: ", options);
+    console.log(options.physics.solver);
+    if (options.physics.solver === "barnesHut") {
+      networkRef.current.setOptions({
+        physics: {
+          solver: 'forceAtlas2Based'
+        }
+      });
+    }
+    if (options.physics.solver === "forceAtlas2Based") {
+      networkRef.current.setOptions({
+        physics: {
+          solver: 'barnesHut'
+        }
+      });
+    }
+    const network = new Network(containerRef.current, data, options);
+    networkRef.current = network;
+  };
 
   const toggleClusters = () => {
     if (!networkRef.current) return;
@@ -452,34 +481,9 @@ const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
             </a>
           </button>
         </div>
-      )} forceAtlas2Based, repulsion, barnesHut, hierarchicalRepulsion
+      )}
       <div>
-        <button className="solver1">
-          <a href="/graph?solver=forceAtlas2Based">
-            Solver: forceAtlas2Based
-          </a>
-        </button>
-      </div>
-      <div>
-        <button className="solver2">
-          <a href="/graph?solver=repulsion">
-            Solver: repulsion
-          </a>
-        </button>
-      </div>
-      <div>
-        <button className="solver3">
-          <a href="/graph?solver=barnesHut">
-            Solver: barnesHut
-          </a>
-        </button>
-      </div>
-      <div>
-        <button className="solver4">
-          <a href="/graph?solver=hierarchicalRepulsion">
-            Solver: hierarchicalRepulsion
-          </a>
-        </button>
+        <button className="solver1" onClick={changeSolver}>change solver</button>
       </div>
       <div className ="select-node">
         <select
