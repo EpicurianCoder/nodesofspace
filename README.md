@@ -29,7 +29,7 @@ A powerful visual database management tool built with **Next.js**. NodeGraph let
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/nodegraph-interface.git
+git clone https://github.com/EpicurianCoder/nodesofspace.git
 cd nodegraph-interface
 ```
 
@@ -100,7 +100,7 @@ MIT License – feel free to use, modify, and distribute.
 
 ## 📬 Contact
 
-Questions, ideas, or feedback? Reach out at [you@example.com](mailto:you@example.com)
+Questions, ideas, or feedback? Reach out at to me on GitHub at @EpicurianCoder
 
 ## 📄Notes
 
