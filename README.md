@@ -101,3 +101,7 @@ MIT License – feel free to use, modify, and distribute.
 ## 📬 Contact
 
 Questions, ideas, or feedback? Reach out at [you@example.com](mailto:you@example.com)
+
+## 📄Notes
+
+The application was originally written as a .js NEXT application and was extended with .ts functionality. It is in the process of being entirely converted to only TypeScript.
