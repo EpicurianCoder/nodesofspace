@@ -27,11 +27,11 @@ export default async function ProtectedPage() {
       <div style={{ width: "100%" }}>
         <div
           style={{
-            backgroundColor: "#f0f4f8", // Replace with your desired accent color
+            backgroundColor: "#f0f4f8", // accent color
             fontSize: "0.875rem",
             padding: "12px 20px",
             borderRadius: "8px",
-            color: "#333", // Replace with your desired foreground color
+            color: "#333", // foreground color
             display: "flex",
             gap: "12px",
             alignItems: "center",

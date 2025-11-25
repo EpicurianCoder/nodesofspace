@@ -8,7 +8,7 @@ export default async function Home({ searchParams }) {
   const { fUseEdges, solver } = await searchParams;
   
   // get user id to pass to the graph
-  // this is a server component so we can use the supabase client directly
+  // Server component -> so we can use the supabase client directly
   // and get the user id from the session
   const {
     data: { user },

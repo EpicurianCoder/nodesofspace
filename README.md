@@ -4,6 +4,14 @@ A powerful visual database management tool built with **Next.js**. NodeGraph let
 
 ---
 
+## ✅ Requirements
+
+**Supabase db**
+- This application requires SupaBase to be setup, both for the login/Auth process, as well as for the database mamnagmeent of the Node Graph items themselves. visit https://supabase.com/docs/guides/database/overview for more information.
+
+**Google Vision API**
+- This is required for the identification and classification of images when inserting them into the node graph. Place the Google Viosion API Key into the .env file, along with with required supabase USER/KEY combination.
+
 ## 🚀 Features
 
 - Add nodes with text, tags, and images

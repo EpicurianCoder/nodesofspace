@@ -4,6 +4,8 @@ import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+// Only users currently logged in can reach this page
+
 export default async function ResetPassword(props: {
   searchParams: Promise<Message>;
 }) {

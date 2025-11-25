@@ -11,6 +11,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import supabase from "@/lib/supabaseClient";
 import tags from "@/lib/tags.json";
 
+// The VisGraph component is the external library that renders an interacive node graph
+// within the HTML window.
+
 const VisGraph = ({ userId, items, email, fUseEdges, solver }) => {
   const containerRef = useRef(null);
   const [selectedNode, setSelectedNode] = useState(null);

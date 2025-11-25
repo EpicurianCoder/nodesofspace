@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
 export const updateSession = async (request: NextRequest) => {
-  // This `try/catch` block is only here for the interactive tutorial.
+  // This `try/catch` block is only here temporarily for faulting.
   // Feel free to remove once you have Supabase connected.
   try {
     // Create an unmodified response
@@ -60,7 +60,7 @@ export const updateSession = async (request: NextRequest) => {
   } catch (e) {
     // If you are here, a Supabase client could not be created!
     // This is likely because you have not set up environment variables.
-    // Check out http://localhost:3000 for Next Steps.
+    // Check out http://localhost:XX for Next reasoning..
     return NextResponse.next({
       request: {
         headers: request.headers,
